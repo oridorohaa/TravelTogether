@@ -1,0 +1,195 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <script>
+      let trips = {{{trips}}}
+    </script>
+    <script src="/static/script.js"></script>
+    <title>Document</title>
+
+  </head>
+  <body
+    style="background-color:#d2d7d8;
+    background-image:none;
+    display: flex;
+    min-height: 400vh;
+    justify-content: right;
+    padding-right:150px;
+    padding-top:100px
+  "
+  >
+
+    {{!-- Overlay --}}
+     <div class="overlay overlay-slide-left" id="overlay">
+      <nav class="user-navbar">
+      <form action="/" method="GET">
+        <li><button>Home</button></li>
+      </form>
+      <form action="/" method="GET">
+          <li class="visit-friends"><button>Visit Friends</button></li>
+      </form>
+      <form action="logout" method="GET">
+          <li  class="logout" ><button>Log Out</button></li>
+      </form> 
+      
+      {{!-- <a href="/">HOME</a> --}}
+      
+      </nav>
+      
+     </div>
+     <!-- Menu Bars -->
+    <div class="menu-bars" id="menu-bars">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+    {{!-- User Name --}}
+    <h1 class="user-name-h1" style="font-family:Oswald">{{currentUserObj.username}}</h1>
+    <div class="status-circle" id="status-circle"></div>
+    <h3 class="hours-ago-h3">5 hours ago </h3>
+
+    {{! Quote of the Day Container }}
+    {{!-- <div class="status">
+      <div class="status-container" id="status-container">
+        <h2 class="status-h2">Quote of the Day</h2>
+        <h3 class="status-h3" id="quote-text"></h3>
+      </div>
+    </div> --}}
+
+    {{! GoogleMaps image }}
+    <div class="location-container" id="location-container">
+      <img
+        id="map-image"
+        style="filter: saturate(60%);opacity: 1; object-fit: contain"
+        alt=""
+      />
+    </div>
+    <h3 class="loc-status-h3">Status Update </h3>
+    {{!-- <div class="enter-location-container" id="enter-location-container">
+      <input
+        id="current-location-field"
+        type="text"
+        placeholder="enter your current location"
+      />
+      <button 
+        id="location-button"
+        style="width:100%;
+        height: 30px;
+        border-radius: 40px;
+        margin-top: 5px;
+        background-color:rgba(240, 248, 255, 0);
+        border: 3px solid white;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top:3px;
+        
+        "
+      >update location</button>
+    </div> --}}
+
+    {{!Make a new Post to the  Timeline }}
+    <div class="newpost-addbtn-container " id="newpost-addbtn-container">
+      <button class="newpost-add-button" id="newpost-add-button">+</button>
+      </div>
+    <div class="location-trip-container hidden" id="location-trip-container" style="top:670px">
+      <button class="new-trip-button" id="new-trip-button">new trip dates</button>
+      <button class="new-location-button" id="new-location-button">new location</button>
+    </div>
+    <div class=" hidden newpost-container" id="newpost-container">
+      <input name="mappost"
+        id="post-location-field"
+        type="text"
+        placeholder="post location to your timeline"
+      />
+      <input name="date" id="post-time" type="datetime-local" placeholder="choose the time of the post" >
+      <button class="post-location-button"
+        id="post-location-button">post to timeline</button>
+    </div>
+    <div class="newtrip-container hidden" id="newtrip-container">
+      <h3 style="margin-bottom:0px; padding-bottom:0px">From:</h3>
+      <input id="new-trip-from-date" style="margin-top:0px"  name="from" type="date">
+      <h3 style="margin-bottom:0px; margin-top:3px;">To:</h3>
+      <input id="new-trip-to-date" style="margin-top:0px" name="to" type="date">
+      <input id="new-trip-location" type="text" placeholder="enter trip location">
+      <button style="
+        margin-top:10px; 
+        width:100%;
+        height: 30px;
+        border-radius: 40px;
+        background-color:rgba(240, 248, 255, 0);
+        border: 3px solid white;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top:3px;
+      " class="post-trip-button" id="post-trip-button">post trip dates</button>
+    </div>
+
+
+    {{! Timeline Container }}
+    <div class="container">
+      <div class="timeline-container" id="timeline-container"></div>
+      {{#each output}}
+        {{#if this.latitude}}
+          <div class="content-container" id="content-container">
+             <form class="delete-button-form" style="z-index:10" id="delete-button-form" action="/deletePost/{{this._id}}" method="GET">
+                 <button type="button" class="delete-post-button" id="submit-description-button-{{this._id}}" onclick="descriptionButtonClicked('{{this._id}}')"><img src="/static/pencil.png" style="height:10px; width:10px"/></button>
+            <button class="delete-post-button" id="delete-post-button" onclick="return confirm('Are you sure you want to delete this post?');">X</button>
+            </form>
+            {{#if this.description}}
+           <div class="post-desc-div" id="post-desc-div-{{this._id}}" style="height:50px; display:flexbox; justify-content:space-between">
+             <h3 class="postdescription-text" style="display:inline-block" id="postdescription-text-{{this._id}}">{{this.description}}</h3>
+             <h3 class="post-time-h3">{{this.time}} </h3>
+            {{!-- <button class="submit-description-button" id="submit-description-button-{{this._id}}" onclick="descriptionButtonClicked('{{this._id}}')"><img src="/static/pencil.png" style="height:10px; width:10px; position:fixed"/></button> --}}
+            </div>
+            <div class="post-desc-input-div hidden" id="post-desc-input-div-{{this._id}}" style="height:50px">
+            <input class="post-description-input" id="post-description-input-{{this._id}}" placeholder="event description" type="text">
+            </div>
+            {{else}} 
+            <div class="post-desc-div" style="height:50px">
+            <input class="post-description-input" id="post-description-input-{{this._id}}" placeholder="event description" type="text">
+            </div>            
+            {{/if}}
+            <div>
+            {{!-- <button class="submit-description-button" id="submit-description-button-{{this._id}}" onclick="descriptionButtonClicked('{{this._id}}')"><img src="/static/pencil.png" style="height:10px; width:10px"/></button> --}}
+            </div>
+            <img style="filter: saturate(60%);opacity: .8;" width="370" height="120" id="timeline-map" src='https://maps.googleapis.com/maps/api/staticmap?center={{this.latitude}},{{this.longitude}}&zoom=9&scale=2&size=370x120&key=AIzaSyBKClGaUcZWanoyZGta_wrGZh8t-5q6pu8&style=element:geometry%7Ccolor:0xebe3cd&style=element:labels.text.fill%7Ccolor:0x523735&style=element:labels.text.stroke%7Ccolor:0xf5f1e6&style=feature:administrative%7Celement:geometry.stroke%7Ccolor:0xc9b2a6&style=feature:administrative.land_parcel%7Cvisibility:off&style=feature:administrative.land_parcel%7Celement:geometry.stroke%7Ccolor:0xdcd2be&style=feature:administrative.land_parcel%7Celement:labels.text.fill%7Ccolor:0xae9e90&style=feature:administrative.neighborhood%7Cvisibility:off&style=feature:landscape.natural%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:labels.text%7Cvisibility:off&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x93817c&style=feature:poi.park%7Celement:geometry.fill%7Ccolor:0xa5b076&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x447530&style=feature:road%7Celement:geometry%7Ccolor:0xf5f1e6&style=feature:road%7Celement:labels%7Cvisibility:off&style=feature:road.arterial%7Celement:geometry%7Ccolor:0xfdfcf8&style=feature:road.highway%7Celement:geometry%7Ccolor:0xf8c967&style=feature:road.highway%7Celement:geometry.stroke%7Ccolor:0xe9bc62&style=feature:road.highway.controlled_access%7Celement:geometry%7Ccolor:0xe98d58&style=feature:road.highway.controlled_access%7Celement:geometry.stroke%7Ccolor:0xdb8555&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x806b63&style=feature:transit.line%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:transit.line%7Celement:labels.text.fill%7Ccolor:0x8f7d77&style=feature:transit.line%7Celement:labels.text.stroke%7Ccolor:0xebe3cd&style=feature:transit.station%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:water%7Celement:geometry.fill%7Ccolor:0xb9d3c2&style=feature:water%7Celement:labels.text%7Cvisibility:off&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x92998d'/>
+            {{!-- <div style="height:100px; width:100px; background-color:black " id="delete-button-div"> --}}
+           
+            {{!-- <div> --}}
+          </div>
+          {{!-- <h3 class="post-time" style="color:rgb(14, 101, 136);">{{this.time}}</h3> --}}
+          <div class="post-dot"></div>
+        {{else}}
+          {{#if this.loc}}
+          <div class="day-divider-container id-{{this.loc}}" id="day-divider-container-{{this.loc}}">
+          </div>
+          <h3 class="divider-time" style="">{{this.t}}</h3>
+          {{else}}
+          <div class="day-divider-container" id="day-divider-container">
+          </div>
+           <h3 class="divider-time" style="">{{this.t}}</h3>
+           {{/if}} 
+          {{!-- {{/if}} --}}
+        {{/if}}
+      {{/each}} 
+    </div>
+    {{! Script }}
+   <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKClGaUcZWanoyZGta_wrGZh8t-5q6pu8&libraries=places&callback=initMap"
+    />
+     <script>
+     
+    </script>
+
+
+  </body>
+  
+
+</html>
