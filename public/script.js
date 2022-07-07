@@ -40,109 +40,96 @@ window.onload = function () {
   let dividers = document.querySelectorAll(".day-divider-container");
   // let tripDividers = document.querySelectorAll(".trip-divider-container");
 
-  console.log("Dividers:", dividers);
-
-  console.log("TRIPS only----->", trips);
-
-  offset = 25;
   colors = [
     "#5FA59B",
-    "#ECE6D2",
+    "#C3A4D1",
     "#F3E7B1",
     "#DF9881",
     "#CB5A55",
     "#E6E8C4",
     "#FF7A4E",
     "#58949C",
-    // "#E0BBE4",
-    // "#957DAD",
-    // "#D291BC",
-    // "#FEC8D8",
-    // "#FFDFD3",
   ];
-  i = 0;
-  trips.map((trip) => {
-    //find the div that matches the trip fromDate and toDate
-    // div contains 'location' class -- the thing in common
 
-    console.log(trip.location);
-    let tripDivs = document.querySelectorAll(`.id-${trip._id}`);
+  function setTripDivs(trips) {
+    offset = 25;
+    i = 0;
+    trips.map((trip) => {
+      //find the div that matches the trip fromDate and toDate
+      // div contains 'location' class -- the thing in common
 
-    console.log(tripDivs, "---all trip DIVS");
+      let tripDivs = document.querySelectorAll(`.id-${trip._id}`);
 
-    let s = tripDivs[0];
-    let f = tripDivs[1];
-    console.log(s, f);
-    if (s && f) {
-      let sPos = s.getBoundingClientRect();
-      let fPos = f.getBoundingClientRect();
-      sPosScroll = sPos.top + window.scrollY;
-      fPosScroll = fPos.top + window.scrollY;
+      let s = tripDivs[0];
+      let f = tripDivs[1];
+      // console.log(s, f);
+      if (s && f) {
+        let sPos = s.getBoundingClientRect();
+        let fPos = f.getBoundingClientRect();
+        sPosScroll = sPos.top + window.scrollY;
+        fPosScroll = fPos.top + window.scrollY;
 
-      sPosLeft = sPos.right + window.scrollX - offset;
-      fPosLeft = fPos.right + window.scrollX - offset;
-      color = colors[i % colors.length];
-      i++;
-      offset += 45;
+        sPosLeft = sPos.right + window.scrollX - offset;
+        fPosLeft = fPos.right + window.scrollX - offset;
+        color = colors[i % colors.length];
+        i++;
+        offset += 45;
 
-      console.log(sPos, "--------sPos");
-      console.log(sPosLeft, "----sPosLeft");
+        let tripLocation = document.createElement("tripLocation-text");
+        tripLocation.className = "tripLocation-text";
+        tripLocation.innerHTML = `${trip.location}`;
+        tripLocation.style.fontWeight = "bold";
+        tripLocation.style.letterSpacing = "3px";
+        tripLocation.style.writingMode = "vertical-rl";
+        tripLocation.style.backgroundColor = "#00000000";
+        tripLocation.style.fontSize = "30px";
+        tripLocation.style.position = "absolute";
+        tripLocation.style.top = sPosScroll + 200;
+        tripLocation.style.color = color;
+        tripLocation.style.left = sPosLeft - 27;
+        tripLocation.style.height = 200;
+        tripLocation.style.fontFamily = "Oswald";
 
-      let tripLocation = document.createElement("tripLocation-text");
-      tripLocation.innerHTML = `${trip.location}`;
-      tripLocation.style.fontWeight = "bold";
-      tripLocation.style.letterSpacing = "3px";
-      tripLocation.style.writingMode = "vertical-rl";
-      tripLocation.style.backgroundColor = "#00000000";
-      tripLocation.style.fontSize = "30px";
-      tripLocation.style.position = "absolute";
-      tripLocation.style.top = sPosScroll + 200;
-      tripLocation.style.color = color;
-      tripLocation.style.left = sPosLeft - 40;
-      tripLocation.style.height = 200;
-      tripLocation.style.fontFamily = "Oswald";
+        let tripLine = document.createElement("tripLine");
+        tripLine.className = "tripLine";
+        tripLine.style.width = "4px";
+        tripLine.style.height = `${fPos.top - sPos.top}px`;
+        tripLine.style.backgroundColor = color;
+        tripLine.style.top = sPosScroll;
+        tripLine.style.left = sPosLeft;
+        tripLine.style.position = "absolute";
 
-      let tripLine = document.createElement("tripLine");
-      tripLine.className = "tripLine";
-      tripLine.style.width = "4px";
-      tripLine.style.height = `${fPos.top - sPos.top}px`;
-      tripLine.style.backgroundColor = color;
-      tripLine.style.top = sPosScroll;
-      tripLine.style.left = sPosLeft;
-      tripLine.style.position = "absolute";
+        let tripDot = document.createElement("tripDot");
+        let tripDotBottom = document.createElement("tripDotB");
 
-      let tripDot = document.createElement("tripDotT");
-      let tripDotBottom = document.createElement("tripDotB");
+        tripDot.className = "tripDot";
+        tripDot.style.borderRadius = "50px";
+        tripDot.style.backgroundColor = color;
+        tripDot.style.position = "absolute";
+        tripDot.style.height = "15px";
+        tripDot.style.width = "15px";
+        tripDot.style.left = sPosLeft - 6;
+        tripDot.style.top = sPosScroll - 7;
 
-      tripDot.className = "tripDot";
-      tripDot.style.borderRadius = "50px";
-      tripDot.style.backgroundColor = color;
-      tripDot.style.position = "absolute";
-      tripDot.style.height = "15px";
-      tripDot.style.width = "15px";
-      tripDot.style.left = sPosLeft - 6;
-      tripDot.style.top = sPosScroll - 7;
+        tripDotBottom.className = "tripDotB";
+        tripDotBottom.style.borderRadius = "50px";
+        tripDotBottom.style.backgroundColor = color;
+        tripDotBottom.style.position = "absolute";
+        tripDotBottom.style.height = "15px";
+        tripDotBottom.style.width = "15px";
+        tripDotBottom.style.left = fPosLeft - 6;
+        tripDotBottom.style.top = fPosScroll - 7;
 
-      tripDotBottom.className = "tripDotB";
-      tripDotBottom.style.borderRadius = "50px";
-      tripDotBottom.style.backgroundColor = color;
-      tripDotBottom.style.position = "absolute";
-      tripDotBottom.style.height = "15px";
-      tripDotBottom.style.width = "15px";
-      tripDotBottom.style.left = fPosLeft - 6;
-      tripDotBottom.style.top = fPosScroll - 7;
-
-      document.body.appendChild(tripLocation);
-      document.body.appendChild(tripDot);
-      document.body.appendChild(tripDotBottom);
-      document.body.appendChild(tripLine);
-      //   console.log("TRIPLINE----->", tripLine);
-      //   console.log("TRIPDOT----->", tripDot);
-      //   console.log(s, f, "start and finish");
-      //   console.log(sPosScroll, "sPos with SCROLL");
-      //   console.log(fPosScroll, "fPos with SCROLL");
-    }
-  });
+        document.body.appendChild(tripLocation);
+        document.body.appendChild(tripDot);
+        document.body.appendChild(tripDotBottom);
+        document.body.appendChild(tripLine);
+      }
+    });
+  }
+  if (trips) {
+    setTripDivs(trips);
+  }
   // TEST CASE ---->
   // console.log("TRIP dividers:", tripDividers);
   // let s = dividers[0];
@@ -324,8 +311,43 @@ window.onload = function () {
     }
   }
 
+  // function scrollToElement(pageElement) {
+  //     var positionX = 0,
+  //         positionY = 0;
+
+  //     while(pageElement != null){
+  //         positionX += pageElement.offsetLeft;
+  //         positionY += pageElement.offsetTop;
+  //         pageElement = pageElement.offsetParent;
+  //         window.scrollTo(positionX, positionY);
+  //     }
+  // }
+
+  function scrollToElement(pageElement) {
+    positionX = 0;
+    positionY = 0;
+
+    console.log("SCROLL TO FUNCTION");
+
+    // while (pageElement !== null) {
+    positionX += pageElement.offsetLeft;
+    positionY += pageElement.offsetTop - 100;
+    pageElement = pageElement.offsetParent;
+    window.scrollTo(positionX, positionY);
+    // }
+  }
+
+  let timeDividerElements = document.querySelectorAll(".divider-time");
+  let pageElement;
+  timeDividerElements.forEach((el) => {
+    if (el.innerHTML === "Yesterday") {
+      pageElement = el;
+    }
+  });
+  console.log(pageElement, "PAGE ELEMENT");
+
   // On Load
-  getQuotes();
+  // getQuotes();
 
   // ------------------------------Event Listners----------------------
   menuBars?.addEventListener("click", toggleNav);
@@ -374,6 +396,7 @@ window.onload = function () {
   });
 
   // Add Post Description Button
+  let isEditing = false;
   descriptionButtonClicked = function (id) {
     console.log(id);
     console.log("button working");
@@ -387,11 +410,9 @@ window.onload = function () {
     let postDescInputDiv = document.getElementById(`post-desc-input-div-${id}`);
     let postDescTextDiv = document.getElementById(`post-desc-div-${id}`);
 
-    let clicked = false;
     let description = postDescriptionInput?.value;
-    if (!clicked) {
+    if (isEditing) {
       // console.log(postDescriptionContainer?.value, "postDescContainer. VALUE");
-
       fetch("/postDescrip", {
         method: "POST",
         headers: {
@@ -409,36 +430,43 @@ window.onload = function () {
             window.location.reload();
           }
         });
-      clicked = true;
       console.log("added description");
       // postDescriptionInput.classList.add("hidden");
-    } else if (clicked) {
+    } else {
+      isEditing = true;
       console.log(description, "DESCRIPTION");
-      postDescriptionInput.value = description;
-      postDescInputDiv.classList.remove("hidden");
-      postDescTextDiv.classList.add("hidden");
-      description = postDescription?.value;
-      fetch("/editDescrip", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          description,
-        }),
-      })
-        .then((e) => e.json())
-        .then((x) => {
-          if (x.status === "success") {
-            window.location.reload();
-          }
-        });
+      if (postDescriptionContainer) {
+        postDescriptionInput.value = postDescriptionContainer.textContent;
+      } else {
+        postDescriptionInput.value = "";
+      }
+      postDescInputDiv?.classList.remove("hidden");
+      postDescTextDiv?.classList.add("hidden");
+      // description = postDescriptionInput?.value;
+      // fetch("/editDescrip", {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     id,
+      //     description,
+      //   }),
+      // })
+      //   .then((e) => e.json())
+      //   .then((x) => {
+      //     if (x.status === "success") {
+      //       // window.location.reload();
+      //     }
+      // });
 
       // clicked = false;
       console.log("edited description");
     }
   };
+
+  // Click on Post Description
+
   // Add + Add Post button
   addPostCircleBtnContanier.addEventListener("click", () => {
     console.log("circle + button is working");
@@ -448,10 +476,13 @@ window.onload = function () {
     newLocationOrTripContainer.classList.remove("hidden");
   });
 
+  let goBackBtnDiv = document.getElementById("trip-goback-button-div");
+  let goBackButton = document.getElementById("trip-goback-button");
   // Add new Location Button
   newLocationBtn.addEventListener("click", () => {
     newLocationOrTripContainer.classList.add("hidden");
     addPostInfoContainer.classList.remove("hidden");
+    goBackBtnDiv.classList.remove("hidden");
   });
 
   // Add new Trip Buttton
@@ -459,6 +490,20 @@ window.onload = function () {
     newLocationOrTripContainer.classList.add("hidden");
     console.log(newTripContainer, "new trip Container");
     newTripContainer.classList.remove("hidden");
+    goBackBtnDiv.classList.remove("hidden");
+  });
+
+  // Go Back Button Event Listner
+
+  goBackButton.addEventListener("click", () => {
+    console.log("INSIDE GOBACK BUTTON");
+    if (newTripContainer.classList.contains("hidden")) {
+      addPostInfoContainer.classList.add("hidden");
+    } else if (addPostInfoContainer.classList.contains("hidden")) {
+      newTripContainer.classList.add("hidden");
+    }
+    newLocationOrTripContainer.classList.remove("hidden");
+    goBackBtnDiv.classList.add("hidden");
   });
 
   let newTripFromDate = document.getElementById("new-trip-from-date");
@@ -506,7 +551,25 @@ window.onload = function () {
 
   // autocompletePlace
 
+  scrollToElement(pageElement);
+
   // end window.onload
+  function updateTripDivs() {
+    let a = document.querySelectorAll("tripLine");
+    let b = document.querySelectorAll("tripDot");
+    let c = document.querySelectorAll("tripDotB");
+    let d = document.querySelectorAll("tripLocation-text");
+    a.forEach((x) => x.remove());
+    b.forEach((x) => x.remove());
+    c.forEach((x) => x.remove());
+    d.forEach((x) => x.remove());
+    console.log("resizing function");
+    setTripDivs(trips);
+  }
+
+  window.onresize = function () {
+    updateTripDivs();
+  };
 };
 
 window.initMap = function () {
