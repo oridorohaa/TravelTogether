@@ -1,0 +1,92 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Together</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="icon" href="/static/alien-svgrepo-com 1 (2).png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
+    />
+  </head>
+  <body>
+
+    <!-- Dark Mode Switch -->
+    <div class="theme-switch-wrapper">
+      <span id="toggle-icon">
+        <span class="toggle-text">Light Mode</span>
+        <i class="fas fa-sun"></i>
+      </span>
+      <label class="switch">
+        <input type="checkbox" />
+        <div class="slider round"></div>
+      </label>
+    </div>
+    {{! Navigation bar }}
+    <nav id="nav" class="home-nav">
+      <!-- href connects to the section id -->
+      <a href="#home">HOME</a>
+      <a href="/timelineHome">PROFILE</a>
+      <a href="#about">ABOUT</a>
+      <a href="#login">LOGIN</a>
+
+    </nav>
+    {{! Sections }}
+    <section id="home"> <h1>Travel Together</h1> </section>
+    <section id="about"><div
+        class="about-container"
+        {{! style="filter: saturate(80%)" }}
+        id="about-container"
+      ><h2>What if you could have a platform that allowed you to save time and
+          create a consistent and reliable way of sharing your current and
+          future plans with your family and friends. Well check this out...</h2></div></section>
+    <section id="login">
+      <!-- LogIn Container -->
+      <div class="login-container" id="login-container">
+        <div class="login-info-container" id="login-info-container">
+          <h2>Member LogIn</h2>
+          <form action="timelineHome" method="GET">
+            <input
+              name="username"
+              type="text"
+              placeholder="username"
+              autocomplete="off"
+            />
+            <input
+              name="password"
+              type="password"
+              placeholder="password"
+              autocomplete="off"
+            />
+            <button id="login-button">LogIn</button>
+          </form>
+        </div>
+      </div>
+      <!--Registration Container -->
+      <div class="reg-container" id="reg-container">
+        <div class="reg-info-container">
+          <h2>Register</h2>
+          <form action="timelineHome" method="POST">
+            <input name="username" type="text" placeholder="choose username" />
+            <!-- <label for="email">Email</label> -->
+            <input name="email" type="text" placeholder=" email" />
+            <!-- <label for="birthday">Birthday</label> -->
+            <input
+              name="birthdate"
+              type="date"
+              placeholder="enter your birthday"
+            />
+            <!-- <label for="password">Password</label> -->
+            <input name="password" type="text" placeholder="choose password" />
+            {{! <input type="text" placeholder="confirm password" /> }}
+            <button id="signup-button">Sign Up</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- Script -->
+    <script src="/static/script.js"></script>
+  </body>
+</html>

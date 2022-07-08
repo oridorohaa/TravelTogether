@@ -1,0 +1,71 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/style.css" />
+
+    <title>Document</title>
+  </head>
+  <body
+    style="background-color:#E5E5E5;
+    background-image:none;
+    display:flex;
+    justify-content: center;
+    font-family:Inter;
+  "
+  >
+          {{!-- <section id="login"> --}}
+          <div class="login-main-container" > 
+              <div class="login-logo" style="">
+                <a href="/">
+                <img src="/static/plan_logo_clear.png"  
+                style="display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                  width: 50%"alt="">
+                </a>
+              </div>     
+              <div class="login-container" id="login-container">
+                <div class="login-info-container" id="login-info-container">
+                  <h2 style="font-family: Inter; 
+                  font-size:20px;
+                   color:rgb(95, 89, 84); 
+                   font-weight:600; 
+                   text-align:center; 
+                   padding-bottom:45px">SIGN IN TO YOUR ACCOUNT</h2>
+                  <form action="dologin" style="display:flex;
+                   flex-direction:column; width:500px" method="post">
+                    <input
+                      name="username"
+                      type="text"
+                      placeholder="username"
+                      autocomplete="off"
+                    />
+                    <input
+                      name="password"
+                      type="password"
+                      placeholder="password"
+                      autocomplete="off"
+                    />
+                    <button id="login-button" style="    min-width: 227px;
+                      height: 50px;
+                      border-radius:2.5px;
+
+                      background:#50e3c2;;
+                      mix-blend-mode: normal;
+                      border:0;
+                      font-family: Inter;
+                      font-style: normal;
+                      font-weight: 600;
+                      font-size: 16px;
+                      line-height: 19px;
+                      text-align: center;
+                      color: #0f3d33;
+                      margin-top: 40px;">SIGN IN</button>
+                  </form>
+                </div>
+              </div>
+
+  </body>
+</html>

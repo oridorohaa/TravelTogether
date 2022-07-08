@@ -42,12 +42,12 @@ window.onload = function () {
 
   colors = [
     "#5FA59B",
-    "#C3A4D1",
-    "#F3E7B1",
+    "#C2AAA3",
+    "#A8A0B2",
     "#DF9881",
-    "#CB5A55",
-    "#E6E8C4",
-    "#FF7A4E",
+    "#DE8471",
+    "#A3B79C",
+    "#FE9F9F",
     "#58949C",
   ];
 
@@ -78,17 +78,18 @@ window.onload = function () {
         let tripLocation = document.createElement("tripLocation-text");
         tripLocation.className = "tripLocation-text";
         tripLocation.innerHTML = `${trip.location}`;
-        tripLocation.style.fontWeight = "bold";
+        tripLocation.style.fontWeight = "400";
         tripLocation.style.letterSpacing = "3px";
         tripLocation.style.writingMode = "vertical-rl";
+        tripLocation.style.transform = "scale(-1)";
         tripLocation.style.backgroundColor = "#00000000";
-        tripLocation.style.fontSize = "30px";
+        tripLocation.style.fontSize = "23px";
         tripLocation.style.position = "absolute";
-        tripLocation.style.top = sPosScroll + 200;
+        tripLocation.style.top = sPosScroll + 100;
         tripLocation.style.color = color;
-        tripLocation.style.left = sPosLeft - 27;
+        tripLocation.style.left = sPosLeft - 30;
         tripLocation.style.height = 200;
-        tripLocation.style.fontFamily = "Oswald";
+        tripLocation.style.fontFamily = "Inter";
 
         let tripLine = document.createElement("tripLine");
         tripLine.className = "tripLine";
@@ -130,58 +131,6 @@ window.onload = function () {
   if (trips) {
     setTripDivs(trips);
   }
-  // TEST CASE ---->
-  // console.log("TRIP dividers:", tripDividers);
-  // let s = dividers[0];
-  // let f = dividers[1];
-
-  // console.log(s, "Start Divider");
-
-  // let sPos = s.getBoundingClientRect();
-  // let fPos = f.getBoundingClientRect();
-
-  // sPosScroll = sPos.top + window.scrollY;
-  // fPosScroll = fPos.top + window.scrollY;
-
-  // // the size of the new div will be (fPos - sPos)px
-
-  // let tripLine = document.createElement("tripLine");
-  // tripLine.className = "tripLine";
-  // tripLine.style.width = "4px";
-  // tripLine.style.height = `${fPos.top - sPos.top}px`;
-  // tripLine.style.backgroundColor = "black";
-  // tripLine.style.top = sPosScroll + 46;
-  // tripLine.style.position = "absolute";
-
-  // let tripDot = document.createElement("tripDotT");
-  // let tripDotBottom = document.createElement("tripDotB");
-
-  // tripDot.className = "tripDot";
-  // tripDot.style.borderRadius = "50px";
-  // tripDot.style.backgroundColor = "black";
-  // tripDot.style.position = "absolute";
-  // tripDot.style.height = "15px";
-  // tripDot.style.width = "15px";
-  // tripDot.style.top = sPosScroll + 46;
-
-  // tripDotBottom.className = "tripDotB";
-  // tripDotBottom.style.borderRadius = "50px";
-  // tripDotBottom.style.backgroundColor = "black";
-  // tripDotBottom.style.position = "absolute";
-  // tripDotBottom.style.height = "15px";
-  // tripDotBottom.style.width = "15px";
-  // tripDotBottom.style.top = fPosScroll + 36;
-
-  // document.body.appendChild(tripDot);
-  // document.body.appendChild(tripDotBottom);
-  // document.body.appendChild(tripLine);
-  // console.log("TRIPLINE----->", tripLine);
-  // console.log("TRIPDOT----->", tripDot);
-
-  // console.log(s, f, "start and finish");
-  // console.log(sPosScroll, "sPos with SCROLL");
-  // console.log(fPosScroll, "fPos with SCROLL");
-
   //Light / Dark Modes
   //DRY CODE --- putting two functions into one using turnary
   function toggleDarkLightMode(isDark) {
@@ -396,10 +345,27 @@ window.onload = function () {
   });
 
   // Add Post Description Button
-  let isEditing = false;
-  descriptionButtonClicked = function (id) {
-    console.log(id);
-    console.log("button working");
+
+  //Add event listner to post description container with specific id
+  let currentlyEditing;
+
+  document.addEventListener("click", (e) => {
+    console.log("all");
+    console.log(e.target);
+    let id;
+    if (
+      e.target.classList.contains("postdescription-text") ||
+      e.target.classList.contains("post-desc-div")
+    ) {
+      console.log("desc-div clicked");
+      console.log(e);
+
+      let target = e.target.id.split("-");
+      id = target[target.length - 1];
+      console.log(id, "ID");
+      currentlyEditing = id;
+    }
+
     postDescriptionInput = document.getElementById(
       `post-description-input-${id}`
     );
@@ -410,61 +376,60 @@ window.onload = function () {
     let postDescInputDiv = document.getElementById(`post-desc-input-div-${id}`);
     let postDescTextDiv = document.getElementById(`post-desc-div-${id}`);
 
-    let description = postDescriptionInput?.value;
-    if (isEditing) {
-      // console.log(postDescriptionContainer?.value, "postDescContainer. VALUE");
-      fetch("/postDescrip", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          description,
-        }),
-      })
-        .then((e) => e.json())
-        // this is sent from the server res.json()
-        .then((x) => {
-          if (x.status === "success") {
-            window.location.reload();
-          }
-        });
-      console.log("added description");
-      // postDescriptionInput.classList.add("hidden");
+    if (postDescriptionContainer) {
+      postDescriptionInput.value = postDescriptionContainer.textContent;
     } else {
-      isEditing = true;
-      console.log(description, "DESCRIPTION");
-      if (postDescriptionContainer) {
-        postDescriptionInput.value = postDescriptionContainer.textContent;
-      } else {
-        postDescriptionInput.value = "";
-      }
-      postDescInputDiv?.classList.remove("hidden");
-      postDescTextDiv?.classList.add("hidden");
-      // description = postDescriptionInput?.value;
-      // fetch("/editDescrip", {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     id,
-      //     description,
-      //   }),
-      // })
-      //   .then((e) => e.json())
-      //   .then((x) => {
-      //     if (x.status === "success") {
-      //       // window.location.reload();
-      //     }
-      // });
-
-      // clicked = false;
-      console.log("edited description");
+      postDescriptionInput.value = "";
     }
-  };
+    postDescInputDiv?.classList.remove("hidden");
+    postDescTextDiv?.classList.add("hidden");
+    postDescriptionInput.focus();
+    postDescriptionInput.addEventListener("blur", (e) => {
+      if (currentlyEditing) saveDescriptionFromInput(currentlyEditing);
+      currentlyEditing = "";
+    });
+    console.log("edited description");
+  });
 
+  function saveDescriptionFromInput(id) {
+    // saves desc from input box for "id"
+    postDescriptionInput = document.getElementById(
+      `post-description-input-${id}`
+    );
+
+    postDescriptionContainer = document.getElementById(
+      `postdescription-text-${id}`
+    );
+    let description = postDescriptionInput?.value;
+
+    // console.log(postDescriptionContainer?.value, "postDescContainer. VALUE");
+    fetch("/postDescrip", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id,
+        description,
+      }),
+    })
+      .then((e) => e.json())
+      // this is sent from the server res.json()
+      .then((x) => {
+        if (x.status === "success") {
+          window.location.reload();
+        }
+      });
+    console.log("added description");
+    // switches back to non editing mode
+  }
+
+  document.addEventListener("keypress", (e) => {
+    if (e.keyCode === 13 && currentlyEditing) {
+      saveDescriptionFromInput(currentlyEditing);
+      currentlyEditing = "";
+    }
+  });
   // Click on Post Description
 
   // Add + Add Post button
@@ -537,14 +502,6 @@ window.onload = function () {
       });
   });
 
-  // deleteBtnDiv.addEventListener("mouseover", () => {
-  //   console.log("MOUSEOVER WORKING");
-  //   let deleteBtnForm = document.getElementById("delete-button-form");
-  //   deleteBtnForm.classList.remove("hidden");
-  // });
-  // autocomplete = new google.maps.places.Autocomplete(currentAddressField, {
-  //   types: ["(cities)"],
-  // });
   autocompletePost = new google.maps.places.Autocomplete(postAddressField, {
     types: ["(cities)"],
   });

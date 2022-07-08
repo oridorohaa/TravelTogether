@@ -65,21 +65,15 @@
         <div class="container">
           <nav class="navbar site-navbar">
             <!-- Brand Logo-->
-            <div class="brand-logo">
-              <a href="#">
-                <!-- light version logo (logo must be black)-->
-                <img
-                  src="image/logo/logo-black.png"
-                  alt=""
-                  class="light-version-logo"
-                />
-                <!-- Dark version logo (logo must be White)-->
-                <img
-                  src="image/logo/logo-white.png"
-                  alt=""
-                  class="dark-version-logo"
-                />
-              </a>
+            <div>
+              <img
+                src="/static/plan_logo_light.png"
+                style="display: block;
+                  margin-left: 0;
+                  
+                  width: 20%"
+                alt=""
+              />
             </div>
             <div class="menu-block-wrapper">
               <div class="menu-overlay"></div>
@@ -91,10 +85,13 @@
                   <div class="current-menu-title"></div>
                   <div class="mobile-menu-close">&times;</div>
                 </div>
+
                 <ul class="site-menu-main">
                   <li class="nav-item nav-item-has-children">
-                    <a href="https://www.instagram.com/andriana.oridoroha/?hl=en"
-                     class="nav-link-item drop-trigger">About
+                    <a
+                      href="https://www.instagram.com/andriana.oridoroha/?hl=en"
+                      class="nav-link-item drop-trigger"
+                    >About
                       <i class="fas fa-angle-down"></i>
                     </a>
                     {{! <ul class="sub-menu" id="submenu-9">
@@ -127,11 +124,11 @@
             <div
               class="header-btns header-btn-l-17 ms-auto d-none d-xs-inline-flex align-items-center"
             >
-              <a class="btn sign-in-btn focus-reset" href="#login">
+              <a class="btn sign-in-btn focus-reset" href="/login">
                 Sign in
               </a>
-              <a class="start-trail-btn btn focus-reset" href="#login">
-                Start free trail
+              <a class="start-trail-btn btn focus-reset" href="/register">
+                Start trail
               </a>
             </div>
             <!-- mobile menu trigger -->
@@ -153,11 +150,21 @@
               data-aos-duration="800"
               data-aos-once="true"
             >
+              <div>
+                <img
+                  src="/static/plan_logo_light.png"
+                  style="display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                  width: 40%;"
+                  alt=""
+                />
+              </div>
               <div class="content text-center">
                 <h1>Manage your plans, faster!</h1>
                 <p>Travel Together helps you create custom timeline that keeps
                   your plans organized and your world more connected.</p>
-                <a href="#login" class="btn">Start free 14 days trial</a>
+                <a href="/register" class="btn">Start a free trial now</a>
                 {{! <span>No credit card required</span> }}
               </div>
             </div>
@@ -178,31 +185,42 @@
             <div class="col-lg-4 col-md-6 col-sm-9">
               <div class="single-features single-border position-relative">
                 <div class="circle-dot-1">
-                  <img src="/static/dimensions.png" style="width: 50px; margin-bottom:35px"  />
+                  <img
+                    src="/static/dimensions.png"
+                    style="width: 50px; margin-bottom:35px"
+                  />
                 </div>
                 <h4 style="color:#282828">Single Platform</h4>
-                <p style="color:#464343">Create a custom timeline with easy visual access to your past and
-                  future plans.</p>
+                <p style="color:#464343">Create a custom timeline with easy
+                  visual access to your past and future plans.</p>
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-9">
               <div class="single-features single-border position-relative">
                 <div class="circle-dot-2">
-                  <img src="/static/friends.png" style="width:50px; margin-bottom:35px" alt="">
+                  <img
+                    src="/static/friends.png"
+                    style="width:50px; margin-bottom:35px"
+                    alt=""
+                  />
                 </div>
                 <h4 style="color:#282828">Faster Connections</h4>
-                <p style="color:#464343">Sync your timeline with your family and friends for easier
-                  more enjoyable visual experince.</p>
+                <p style="color:#464343">Sync your timeline with your family and
+                  friends for easier more enjoyable visual experince.</p>
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-9">
               <div class="single-features">
                 <div class="circle-dot-3">
-                  <img src="/static/timeline.png" style="width:50px; margin-bottom:35px" alt="">
+                  <img
+                    src="/static/timeline.png"
+                    style="width:50px; margin-bottom:35px"
+                    alt=""
+                  />
                 </div>
                 <h4 style="color:#282828">Everything in One Place</h4>
-                <p style="color:#464343">Stay connected while creating a unique visual platform for
-                  your life events.
+                <p style="color:#464343">Stay connected while creating a unique
+                  visual platform for your life events.
                 </p>
               </div>
             </div>
@@ -223,10 +241,18 @@
                 >
                   <div class="content-img position-relative">
                     <div class="image-1">
-                      <img src="/static/ScreenShot_3.png" style="width:500px" alt="" />
+                      <img
+                        class="screenshot-img"
+                        src="/static/ScreenShot_3.png"
+                        alt=""
+                      />
                     </div>
                     <div class="image-2">
-                      <img src="/static/ScreenShot.png" style="width:500px" alt="" />
+                      <img
+                        src="/static/ScreenShot.png"
+                        style="width:500px"
+                        alt=""
+                      />
                     </div>
                   </div>
                 </div>
@@ -237,9 +263,13 @@
                   data-aos-once="true"
                 >
                   <div class="content section-heading-11">
-                    <h2 style="color:#282828"> Manage everything faster in a single place.</h2>
-                    <p style="color:#464343">Travel Together gives you the platorm to share your location, create an easier visual experience and more.</p>
-                    <a href="#login" class="btn focus-reset">Start free 14 days trial</a>
+                    <h2 style="color:#282828">
+                      Manage everything faster in a single place.</h2>
+                    <p style="color:#464343">Travel Together gives you the
+                      platorm to share your location, create an easier visual
+                      experience and more.</p>
+                    <a href="/register" class="btn focus-reset">Start your trial
+                      now</a>
                   </div>
                 </div>
               </div>
@@ -247,7 +277,7 @@
           </div>
         </div>
       </div>
-      {{!-- <!--Content Area 2-->
+      {{! <!--Content Area 2-->
       <div class="content-area-l-17-2">
         <div class="container">
           <div class="row align-items-center justify-content-center">
@@ -286,123 +316,31 @@
             </div>
           </div>
         </div>
-      </div> --}}
-      <!--Video Area--> 
+      </div> }}
+      <!--Video Area-->
       <section id="login">
-      <div class="video-area-l-17">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-12">
-              <div class="video-content text-center">
-                <a
-                  data-fancybox=""
-                  href="https://www.youtube.com/embed/9yc1lfFZX-I"
-                ><i class="fas fa-play font-size-7"></i></a>
-                <h2>We help you stay connected</h2>
-                <p>No matter where you are Travel Together helps you stay up to
-                  date with your friends and family.
-                </p>
+        <div class="video-area-l-17">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-12">
+                <div class="video-content text-center">
+                  <a
+                    data-fancybox=""
+                    href="https://www.youtube.com/embed/9yc1lfFZX-I"
+                  ><i class="fas fa-play font-size-7"></i></a>
+                  <h2>We help you stay connected</h2>
+                  <p>No matter where you are Travel Together helps you stay up
+                    to date with your friends and family.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        {{!-- <section id="login"> --}}
-          <div style="display:flex;justify-content:center; margin-top:30px" >    
-              <div class="login-container" id="login-container">
-                <div class="login-info-container" id="login-info-container">
-                  <h2 style="font-family: Inter; 
-                  font-size:20px;
-                   color: rgb(255, 255, 255); 
-                   font-weight:600; 
-                   text-align:center; 
-                   padding-bottom:25px">SIGN IN TO YOUR ACCOUNT</h2>
-                  <form action="timelineHome" style="display:flex; flex-direction:column; width:500px" method="GET">
-                    <input
-                      name="username"
-                      type="text"
-                      placeholder="username"
-                      autocomplete="off"
-                    />
-                    <input
-                      name="password"
-                      type="password"
-                      placeholder="password"
-                      autocomplete="off"
-                    />
-                    <button id="login-button" style="    min-width: 227px;
-                      height: 50px;
-                      border-radius:2.5px;
+      </section>
 
-                      background:#50e3c2;;
-                      mix-blend-mode: normal;
-                      border:0;
-                      font-family: Inter;
-                      font-style: normal;
-                      font-weight: 600;
-                      font-size: 16px;
-                      line-height: 19px;
-                      text-align: center;
-                      color: #0f3d33;
-                      margin-top: 40px;">SIGN IN</button>
-                  </form>
-                </div>
-              </div>
-              <!--Registration Container -->
-              <div class="reg-container" id="reg-container" style="margin-left: 50px ;">
-                <div class="reg-info-container">
-                  <h2 style="font-family: Inter;
-                    color: rgb(255, 255, 255); 
-                    font-weight:600;
-                    font-size:20px;
-                    text-align:center;
-                    padding-bottom:25px">CREATE A NEW ACCOUNT</h2>
-                  <form  style="display:flex; flex-direction:column; width:500px" action="timelineHome" method="POST">
-                    <input
-                      name="username"
-                      type="text"
-                      placeholder="choose username"
-                    />
-                    <!-- <label for="email">Email</label> -->
-                    <input name="email" type="text" placeholder=" email" />
-                    <!-- <label for="birthday">Birthday</label> -->
-                    <input
-                      name="birthdate"
-                      type="date"
-                      placeholder="enter your birthday"
-                    />
-                    <!-- <label for="password">Password</label> -->
-                    <input
-                      name="password"
-                      type="text"
-                      placeholder="choose password"
-                    />
-                    {{! <input type="text" placeholder="confirm password" /> }}
-                    <button id="signup-button" style="min-width: 227px;
-                      height: 50px;
-                      {{!-- box-shadow:3px 10px; --}}
-                      border-radius:2.5px;
-                      background:#50e3c2;
-                      mix-blend-mode: normal;
-                      border:0;
-                      font-family: Inter;
-                      font-style: normal;
-                      font-weight: 600;
-                      font-size: 16px;
-                      line-height: 19px;
-                      text-align: center;
-                      color: #0f3d33;
-                      margin-top: 40px;">CREATE MY ACCOUNT</button>
-                  </form>
-                </div>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-      </div>
-      </div>
       <!--Pricing Area-->
-      {{!-- <section id="login">
+      {{! <section id="login">
       <div class="pricing-area-l-17 position-relative overflow-hidden">
         <div class="container">
           <div class="row justify-content-center">
@@ -455,8 +393,8 @@
                       margin-top: 40px;">SIGN IN</button>
                   </form>
                 </div>
-              </div> --}}
-              {{!-- <!--Registration Container -->
+              </div> }}
+      {{!-- <!--Registration Container -->
               <div class="reg-container" id="reg-container" style="margin-left: 50px ;">
                 <div class="reg-info-container">
                   <h2 style="font-family: Inter; color: #000; font-weight:600; font-size:20px; text-align:center">CREATE A NEW ACCOUNT</h2>
@@ -503,12 +441,12 @@
       </div>
       </div> --}}
       <!--Brand Area-->
-      <div class="brand-area-l-17">
+      {{!-- <div class="brand-area-l-17">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-xl-9 col-lg-11 col-md-12">
               <div class="content text-center">
-                {{!-- <p>We are proud to have some big brands as our customer</p> --}}
+                {{! <p>We are proud to have some big brands as our customer</p> }}
               </div>
               <div
                 class="brand-area-l-17-items d-flex justify-content-center justify-content-xl-between align-items-center flex-wrap"
@@ -549,8 +487,8 @@
             </div>
           </div>
         </div>
-      </div>
-      {{!-- <!--Testimonial Area-->
+      </div> --}}
+      {{! <!--Testimonial Area-->
       <div class="testimonial-area-l-17">
         <div class="container">
           <div class="row justify-content-center no-gutters border-collapse-1">
@@ -611,27 +549,28 @@
             </div>
           </div>
         </div>
-      </div> --}}
+      </div> }}
       <!--CTA Area-->
-      <div class="cta-area-l-17">
+      {{! <div class="cta-area-l-17">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-lg-10">
               <div
                 class="d-md-flex justify-content-between text-align-lg-start text-center align-items-center"
               >
-                <h2 style="color:#282828;">Manage all your plans in one place </h2>
+                <h2 style="color:#282828;">Manage all your plans in one place
+                </h2>
                 <a href="#" class="btn">Start free trial</a>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> }}
       <!--Footer Area-->
       <footer class="footer-area-l-17 position-relative">
-        <div class="footer-shape">
+        {{! <div class="footer-shape">
           <img src="/static/footer-shape.svg" alt="" />
-        </div>
+        </div> }}
         <div class="container pt-lg-23 pt-15 pb-12">
           <div
             class="row footer-area-l-17-items justify-content-between"
@@ -641,20 +580,22 @@
           >
             <div class="col">
               <div class="footer-widget widget2">
-                {{!-- <p class="widget-title">Store</p> --}}
+                {{! <p class="widget-title">Store</p> }}
                 <ul class="widget-links pl-0 list-unstyled">
-                  {{!-- <li><a href="">Catalog</a></li>
+                  {{! <li><a href="">Catalog</a></li>
                   <li><a href="">Popular</a></li>
                   <li><a href="">Features</a></li>
-                  <li><a href="">F.a.q.</a></li> --}}
+                  <li><a href="">F.a.q.</a></li> }}
                 </ul>
               </div>
             </div>
             <div class="col">
               <div class="footer-widget widget3">
-                {{!-- <li class="nav-item"> --}}
-                <a href="https://www.instagram.com/andriana.oridoroha/?hl=en" 
-                class="nav-link-item drop-trigger" style="
+                {{! <li class="nav-item"> }}
+                <a
+                  href="https://www.instagram.com/andriana.oridoroha/?hl=en"
+                  class="nav-link-item drop-trigger"
+                  style="
                     font-family: Inter;
                     font-style: normal;
                     font-weight: normal;
@@ -666,14 +607,14 @@
                     margin-bottom: 30px;
                 "
                 >About
-                      {{!-- <i class="fas fa-angle-down"></i> --}}
-                    </a>
-                {{!-- </li> --}}
-                {{!-- <p class="widget-title">About</p> --}}
+                  {{! <i class="fas fa-angle-down"></i> }}
+                </a>
+                {{! </li> }}
+                {{! <p class="widget-title">About</p> }}
                 <ul class="widget-links pl-0 list-unstyled">
-                  {{!-- <li><a href="">Catalog</a></li>
+                  {{! <li><a href="">Catalog</a></li>
                   <li><a href="">Popular</a></li>
-                  <li><a href="">Features</a></li> --}}
+                  <li><a href="">Features</a></li> }}
                 </ul>
               </div>
             </div>
@@ -681,9 +622,9 @@
               <div class="footer-widget widget4">
                 <p class="widget-title">Policy</p>
                 <ul class="widget-links pl-0 list-unstyled">
-                  {{!-- <li><a href="">Catalog</a></li>
+                  {{! <li><a href="">Catalog</a></li>
                   <li><a href="">Popular</a></li>
-                  <li><a href="">Features</a></li> --}}
+                  <li><a href="">Features</a></li> }}
                 </ul>
               </div>
             </div>
@@ -691,19 +632,19 @@
               <div class="footer-widget widget4">
                 <p class="widget-title">Contact Us</p>
                 <ul class="widget-links pl-0 list-unstyled">
-                  {{!-- <li><a href="">Catalog</a></li>
+                  {{! <li><a href="">Catalog</a></li>
                   <li><a href="">Popular</a></li>
-                  <li><a href="">Features</a></li> --}}
+                  <li><a href="">Features</a></li> }}
                 </ul>
               </div>
             </div>
             <div class="col">
               <div class="footer-widget widget4">
-                {{!-- <p class="widget-title">Support</p> --}}
+                {{! <p class="widget-title">Support</p> }}
                 <ul class="widget-links pl-0 list-unstyled">
-                  {{!-- <li><a href="">Catalog</a></li>
+                  {{! <li><a href="">Catalog</a></li>
                   <li><a href="">Popular</a></li>
-                  <li><a href="">Features</a></li> --}}
+                  <li><a href="">Features</a></li> }}
                 </ul>
               </div>
             </div>
@@ -714,18 +655,18 @@
           <div class="container">
             <div class="row align-items-center">
               <div class="col-lg-4 col-md-4">
-                {{!-- <div class="copyright">
+                {{! <div class="copyright">
                   <p> &copy; Grayic 2020 All right reserved. </p>
-                </div> --}}
+                </div> }}
               </div>
               <div class="col-lg-5 col-md-6">
                 <div class="footer-menu">
                   <ul
                     class="list-unstyled d-flex flex-wrap justify-content-center"
                   >
-                    {{!-- <li><a href="#">Privacy Policy</a></li>
+                    {{! <li><a href="#">Privacy Policy</a></li>
                     <li> <a href="#features">Terms & Conditions</a> </li>
-                    <li><a href="#features"> Site map</a></li> --}}
+                    <li><a href="#features"> Site map</a></li> }}
                   </ul>
                 </div>
               </div>

@@ -39,8 +39,8 @@ app.set("view engine", "hbs");
 
 //----------Middlewear function
 const authUser = async (req, res, next) => {
-  username = req.query.username ?? req.cookies["username"];
-  password = req.query.password ?? req.cookies["password"];
+  username = req.cookies["username"];
+  password = req.cookies["password"];
   req.user = await User.findByCredentials(username, password);
   if (req.user) {
     res.cookie("username", req.user.username);
@@ -55,8 +55,16 @@ const authUser = async (req, res, next) => {
   }
 };
 
-app.get("/", authUser, (req, res) => {
+app.get("/", (req, res) => {
   res.render("index");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
 });
 
 function isClose(a, b) {
@@ -125,16 +133,55 @@ function decorateDate(day) {
   return day;
 }
 // ---------------------USER Routers
-app.get("/timelineHome", authUser, async (req, res) => {
-  // const _id = req.params.id;
-  const currentUser = await User.findById(req.user._id);
-  const currentUserObj = currentUser.toObject();
+app.post("/dologin", async (req, res) => {
+  username = req.body.username;
+  password = req.body.password;
+  req.user = await User.findByCredentials(username, password);
+  if (req.user) {
+    res.cookie("username", req.user.username);
+    res.cookie("password", req.user.password);
+    res.redirect("/" + req.user.username);
+  } else {
+    res.redirect("/login");
+  }
+});
 
-  let posts = await Post.find({ owner: req.user._id }).sort({ date: 1 });
+app.post("/doregister", async (req, res) => {
+  const user = new User(req.body);
+  const existing = await User.findOne({ username: req.body.username });
+
+  if (!existing) {
+    try {
+      await user.save();
+    } catch (e) {
+      // errro
+      res.cookie("message", "Could not create user because " + e);
+      return res.redirect("/register");
+      console.log(e);
+    }
+    const token = await user.generateAuthToken();
+    res.cookie("username", user.username);
+    res.cookie("password", user.password);
+    res.redirect("/" + user.username);
+  } else {
+    res.cookie(
+      "message",
+      "Username already taken. Please try a different name."
+    );
+    res.redirect("/register");
+  }
+});
+
+app.get("/:username", async (req, res) => {
+  const currentUser = await User.findOne({ username: req.params.username });
+  console.log("CURRENT USER:", currentUser);
+  if (!currentUser) return res.redirect("/");
+
+  let posts = await Post.find({ owner: currentUser._id }).sort({ date: 1 });
 
   let postsObj = posts.map(decoratePost);
 
-  let trips = await Trip.find({ owner: req.user._id }).sort({ fromDAte: 1 });
+  let trips = await Trip.find({ owner: currentUser._id }).sort({ fromDAte: 1 });
 
   let days = [];
 
@@ -244,9 +291,8 @@ app.get("/timelineHome", authUser, async (req, res) => {
   // console.log(MAP_API_STYLE);
   // console.log(trips, "------TRIPS");
   console.log("start-------------", output, "---------------------ALL OUTPUT");
-  res.render("timelineHome", {
-    user: req.user.toObject(),
-    currentUserObj,
+  res.render("home", {
+    user: currentUser.toObject(),
     postsObj,
     output,
     trips: JSON.stringify(tripsObj),
@@ -255,16 +301,20 @@ app.get("/timelineHome", authUser, async (req, res) => {
 });
 //maps.googleapis.com/maps/api/staticmap?key=YOUR_API_KEY&center=47.65,-122.35&zoom=12&format=png&maptype=roadmap&&size=480x360
 
-https: app.post("/timelineHome", async (req, res) => {
-  const user = new User(req.body);
-  await user.save();
-  const token = await user.generateAuthToken();
-  res.cookie("username", user.username);
-  res.cookie("password", user.password);
+// app.post("/home", async (req, res) => {
+//   const user = new User(req.body);
+//   await user.save();
+//   const token = await user.generateAuthToken();
+//   res.cookie("username", user.username);
+//   res.cookie("password", user.password);
 
-  const currentUserObj = user.toObject();
-  res.render("timelineHome", { user: user.toObject(), currentUserObj });
-});
+//   const currentUserObj = user.toObject();
+//   res.render("home", {
+//     user: user.toObject(),
+//     // need to pass trips in here as well for the first run?
+//     currentUserObj,
+//   });
+// });
 
 app.get("/logout", authUser, async (req, res) => {
   res.clearCookie("username");

@@ -1,4 +1,4 @@
-        <html lang="en">
+  <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -12,13 +12,14 @@
 
   </head>
   <body
-    style="background-color:#fafafa;
+    style="background-color:#E5E5E5;
     background-image:none;
     display: flex;
     min-height: 400vh;
     justify-content: right;
     padding-right:150px;
-    padding-top:100px
+    padding-top:100px;
+    font-family:Inter;
   "
   >
 
@@ -26,13 +27,13 @@
      <div class="overlay overlay-slide-left" id="overlay">
       <nav class="user-navbar">
       <form action="/" method="GET">
-        <li><button>Home</button></li>
+        <li><button style="font-family: Inter;">Home</button></li>
       </form>
       <form action="/" method="GET">
-          <li class="visit-friends"><button>Visit Friends</button></li>
+          <li class="visit-friends" ><button style="font-family: Inter;">Visit Friends</button></li>
       </form>
       <form action="logout" method="GET">
-          <li  class="logout" ><button>Log Out</button></li>
+          <li  class="logout" ><button style="font-family: Inter;">Log Out</button></li>
       </form> 
       
       {{!-- <a href="/">HOME</a> --}}
@@ -47,7 +48,7 @@
       <div class="bar3"></div>
     </div>
     {{!-- User Name --}}
-    <h1 class="user-name-h1" style="font-family:Oswald">{{currentUserObj.username}}</h1>
+    <h1 class="user-name-h1" style="font-family:Oswald">{{user.username}}</h1>
     <div class="status-circle" id="status-circle"></div>
     <h3 class="hours-ago-h3">5 hours ago </h3>
 
@@ -142,9 +143,10 @@
       {{#each output}}
         {{#if this.latitude}}
          <form class="delete-button-form" style="z-index:10" id="delete-button-form" action="/deletePost/{{this._id}}" method="GET">
-            <button type="button" class="delete-post-button" id="submit-description-button-{{this._id}}" onclick="descriptionButtonClicked('{{this._id}}')"><img src="/static/pencil.png" style="height:18px; width:18px; opacity:.8"/></button>
+            {{!-- <button type="button" class="delete-post-button" id="submit-description-button-{{this._id}}" onclick="descriptionButtonClicked('{{this._id}}')"><img src="/static/pencil.png" style="height:18px; width:18px; opacity:.8"/></button> --}}
             <button class="delete-post-button" id="delete-post-button" onclick="return confirm('Are you sure you want to delete this post?');"><img src="/static/delete.png" style="height:18px; width:18px" /></button>
             </form>
+            {{!Content Container}}
           <div class="content-container" id="content-container">
             {{!-- {{#if this.description}} --}}
            <div class="post-desc-div" id="post-desc-div-{{this._id}}" style="height:50px; display:flexbox; justify-content:space-between">

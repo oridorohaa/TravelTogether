@@ -1,0 +1,93 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <script>
+    const getCookieValue = (name) => (
+    document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+    )
+    window.onload = (e) => {
+            console.log(document.cookie);
+            console.log(unescape(getCookieValue('message')),"unescape");
+            let errorMessage = document.getElementById("error_message") 
+            console.log(errorMessage, "error div ")
+
+            let isError = unescape(getCookieValue('message'))
+            console.log("isError:", isError)
+
+            if(isError){
+                 errorMessage.classList.remove("hidden")
+                errorMessage.textContent=isError
+            }
+            document.cookie = 'message='
+    }
+    </script>
+    <title>Document</title>
+  </head>
+  <body 
+     style="background-color:#E5E5E5;
+    background-image:none;
+    display: flex;
+    justify-content: center;
+    font-family:Inter;
+  ">
+                  <!--Registration Container -->
+              <div class="reg-container" id="reg-container" style="">
+               <div class="login-logo" style="">
+                <a href="/">
+                <img src="/static/plan_logo_clear.png" style="
+                  display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                  width: 50%;" alt="">
+                </a>
+              </div>  
+                <div class="reg-info-container">
+                  <h2 style="font-family: Inter;
+                    color:rgb(63, 49, 31); 
+                    font-weight:500;
+                    font-size:28px;
+                    display:flex;
+                    padding-top:50;
+                    justify-content:center;
+                    {{!-- text-align:center; --}}
+                    padding-bottom:45px">Create a new account</h2>
+                    <h2 class="hidden" id="error_message" style="text-align:center">Error Div </h2>
+                  <form  style="display:flex; flex-direction:column; width:inherit"
+                   action="doregister" method="POST">
+                    <input
+                      name="username"
+                      type="text"
+                      placeholder="username"
+                    />
+                    <!-- <label for="email">Email</label> -->
+                    <input name="email" type="text" placeholder=" email" />
+                    <!-- <label for="password">Password</label> -->
+                    <input
+                      name="password"
+                      type="text"
+                      placeholder="password"
+                    />
+                    {{! <input type="text" placeholder="confirm password" /> }}
+                    <button id="signup-button" style="min-width: 227px;
+                      height: 50px;
+                      {{!-- box-shadow:3px 10px; --}}
+                      border-radius:2.5px;
+                      background:#50e3c2;
+                      mix-blend-mode: normal;
+                      border:0;
+                      font-family: Inter;
+                      font-style: normal;
+                      font-weight: 600;
+                      font-size: 16px;
+                      line-height: 19px;
+                      text-align: center;
+                      color: #0f3d33;
+                      margin-top: 40px;">CREATE MY ACCOUNT</button>
+                  </form>
+                </div>
+              </div>
+  </body>
+</html>
