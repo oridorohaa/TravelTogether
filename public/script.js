@@ -10,6 +10,8 @@ window.onload = function () {
   let postAddressField = document.getElementById("post-location-field");
 
   let dailyContentContainer = document.getElementById("content-container");
+
+  let timelineContainer = document.getElementById("timeline-container");
   let timelineMapImg = document.getElementById("timeline-map");
   let postTime = document.getElementById("post-time");
 
@@ -50,32 +52,41 @@ window.onload = function () {
     "#FE9F9F",
     "#58949C",
   ];
-
+  let placedLines = [];
   function setTripDivs(trips) {
-    offset = 25;
+    offset = 45;
     i = 0;
+    // tripLinesArr = [];
+
+    let baselineOffset =
+      timelineContainer.getBoundingClientRect().left - offset;
     trips.map((trip) => {
       //find the div that matches the trip fromDate and toDate
       // div contains 'location' class -- the thing in common
 
       let tripDivs = document.querySelectorAll(`.id-${trip._id}`);
 
-      let s = tripDivs[0];
-      let f = tripDivs[1];
+      let start = tripDivs[0];
+      let finish = tripDivs[1];
+      sPosLeft = baselineOffset;
       // console.log(s, f);
-      if (s && f) {
-        let sPos = s.getBoundingClientRect();
-        let fPos = f.getBoundingClientRect();
+      if (start && finish) {
+        //is to access after all the elements  laid out
+        let sPos = start.getBoundingClientRect();
+        let fPos = finish.getBoundingClientRect();
         sPosScroll = sPos.top + window.scrollY;
         fPosScroll = fPos.top + window.scrollY;
 
-        sPosLeft = sPos.right + window.scrollX - offset;
-        fPosLeft = fPos.right + window.scrollX - offset;
         color = colors[i % colors.length];
         i++;
-        offset += 45;
+        let curTripHeight = fPos.top - sPos.top;
+        console.log(fPos.top - sPos.top, "cur trip Height");
+        console.log(sPosScroll, "CURsPosScroll");
+        let curMid = sPosScroll + curTripHeight / 2;
+        console.log(curMid, "curMid");
 
         let tripLocation = document.createElement("tripLocation-text");
+        tripLocation.id = i;
         tripLocation.className = "tripLocation-text";
         tripLocation.innerHTML = `${trip.location}`;
         tripLocation.style.fontWeight = "400";
@@ -85,20 +96,53 @@ window.onload = function () {
         tripLocation.style.backgroundColor = "#00000000";
         tripLocation.style.fontSize = "23px";
         tripLocation.style.position = "absolute";
-        tripLocation.style.top = sPosScroll + 100;
         tripLocation.style.color = color;
-        tripLocation.style.left = sPosLeft - 30;
-        tripLocation.style.height = 200;
         tripLocation.style.fontFamily = "Inter";
+        tripLocation.style.whiteSpace = "nowrap";
+
+        document.body.appendChild(tripLocation);
+        console.log(tripLocation.offsetHeight, "tripLocation.offSetHeight");
+        tripLocation.style.top = curMid - tripLocation.offsetHeight / 2;
 
         let tripLine = document.createElement("tripLine");
         tripLine.className = "tripLine";
+        tripLine.id = i;
         tripLine.style.width = "4px";
         tripLine.style.height = `${fPos.top - sPos.top}px`;
         tripLine.style.backgroundColor = color;
         tripLine.style.top = sPosScroll;
-        tripLine.style.left = sPosLeft;
         tripLine.style.position = "absolute";
+
+        document.body.appendChild(tripLine);
+
+        let x1 = tripLine.offsetTop;
+        let x2 = tripLine.offsetTop + tripLine.offsetHeight;
+        if (trip.location === "Greece") {
+          console.log("hi");
+        }
+        if (placedLines.length) {
+          //get the array of all levels / offsetLefts
+          let overlappingLevelsArray = placedLines
+            .filter((t) => {
+              let y1 = t.offsetTop;
+              let y2 = t.offsetTop + t.offsetHeight;
+
+              return Math.max(x1, y1) < Math.min(x2, y2);
+            })
+            .map((t) => t.offsetLeft);
+
+          // get the last level and add an offset to it
+          sPosLeft =
+            Math.min(...overlappingLevelsArray, baselineOffset + offset) -
+            offset;
+          tripLine.style.left = sPosLeft;
+        } else {
+          tripLine.style.left = sPosLeft;
+        }
+
+        placedLines.push(tripLine);
+
+        tripLocation.style.left = sPosLeft - 30;
 
         let tripDot = document.createElement("tripDot");
         let tripDotBottom = document.createElement("tripDotB");
@@ -118,13 +162,11 @@ window.onload = function () {
         tripDotBottom.style.position = "absolute";
         tripDotBottom.style.height = "15px";
         tripDotBottom.style.width = "15px";
-        tripDotBottom.style.left = fPosLeft - 6;
+        tripDotBottom.style.left = sPosLeft - 6;
         tripDotBottom.style.top = fPosScroll - 7;
 
-        document.body.appendChild(tripLocation);
         document.body.appendChild(tripDot);
         document.body.appendChild(tripDotBottom);
-        document.body.appendChild(tripLine);
       }
     });
   }
@@ -260,30 +302,16 @@ window.onload = function () {
     }
   }
 
-  // function scrollToElement(pageElement) {
-  //     var positionX = 0,
-  //         positionY = 0;
-
-  //     while(pageElement != null){
-  //         positionX += pageElement.offsetLeft;
-  //         positionY += pageElement.offsetTop;
-  //         pageElement = pageElement.offsetParent;
-  //         window.scrollTo(positionX, positionY);
-  //     }
-  // }
-
   function scrollToElement(pageElement) {
     positionX = 0;
     positionY = 0;
 
     console.log("SCROLL TO FUNCTION");
 
-    // while (pageElement !== null) {
     positionX += pageElement.offsetLeft;
     positionY += pageElement.offsetTop - 100;
     pageElement = pageElement.offsetParent;
     window.scrollTo(positionX, positionY);
-    // }
   }
 
   let timeDividerElements = document.querySelectorAll(".divider-time");
@@ -295,26 +323,8 @@ window.onload = function () {
   });
   console.log(pageElement, "PAGE ELEMENT");
 
-  // On Load
-  // getQuotes();
-
   // ------------------------------Event Listners----------------------
-  menuBars?.addEventListener("click", toggleNav);
 
-  // Update current location
-  // currentLocationBtn.addEventListener("click", () => {
-  //   let l = autocomplete.getPlace();
-  //   if (!l) {
-  //     //show error somehow
-  //     alert("Please choose a location.");
-  //   } else {
-  //     console.log(l);
-  //     latitude = l.geometry.location.lat();
-  //     longitude = l.geometry.location.lng();
-  //     updateCurrentMap(latitude, longitude);
-  //   }
-  // });
-  // Post Location Map to Timeline
   postLocationBtn.addEventListener("click", () => {
     let l = autocompletePost.getPlace();
     if (!l) {
@@ -322,7 +332,6 @@ window.onload = function () {
     } else {
       latitude = l.geometry.location.lat();
       longitude = l.geometry.location.lng();
-      // updateTimelineNewMap(latitude, longitude);
     }
     fetch("/postToTimeline", {
       method: "POST",
@@ -402,7 +411,6 @@ window.onload = function () {
     );
     let description = postDescriptionInput?.value;
 
-    // console.log(postDescriptionContainer?.value, "postDescContainer. VALUE");
     fetch("/postDescrip", {
       method: "POST",
       headers: {
@@ -439,6 +447,13 @@ window.onload = function () {
     console.log(addPostCircleBtnContanier, "circle container");
     console.log(newLocationOrTripContainer, "container");
     newLocationOrTripContainer.classList.remove("hidden");
+  });
+
+  // go back to the original add button
+  newLocationOrTripContainer.addEventListener("blur", (e) => {
+    console.log("add button blur");
+    newLocationOrTripContainer.classList.add("hidden");
+    addPostCircleBtnContanier.classList.remove("hidden");
   });
 
   let goBackBtnDiv = document.getElementById("trip-goback-button-div");
@@ -529,7 +544,72 @@ window.onload = function () {
   };
 };
 
+function updateTripTextOnScroll() {
+  console.log(window.scrollY, "srollY");
+  console.log(window.innerHeight + window.scrollY, "scrollY+Inner Height");
+
+  let top = window.scrollY;
+  let bottom = window.scrollY + window.innerHeight;
+
+  let a = Array.from(document.querySelectorAll("tripLine"));
+
+  let inRangeTrips = a.filter((t) => {
+    let tripTop = t.offsetTop;
+    let tripBottom = t.offsetTop + t.offsetHeight;
+
+    return (
+      (tripTop >= top && tripTop <= bottom) ||
+      (tripBottom >= top && tripBottom <= bottom)
+    );
+  });
+
+  let b = Array.from(document.querySelectorAll("tripLocation-text"));
+
+  b.forEach((b) => {
+    //when only visible from the top
+    if (b.offsetTop < window.scrollY) {
+      console.log(window.scrollY, "scrollY");
+      let curId = b.id;
+      if (inRangeTrips.filter((x) => x.id === curId).length) {
+        let curTrip = inRangeTrips.find((t) => t.id === curId);
+        console.log(curId, "TESTING curID");
+        console.log("TESTING: curtrip line height", curTrip);
+        if (
+          b.offsetHeight <=
+          curTrip.offsetHeight - (window.scrollY - curTrip.offsetTop)
+        ) {
+          b.style.top = window.scrollY;
+        }
+      }
+      //when only visible from the bottom
+    } else if (
+      b.offsetTop >
+      window.scrollY + window.innerHeight - b.offsetHeight
+    ) {
+      let curId = b.id;
+      if (inRangeTrips.filter((x) => x.id === curId).length) {
+        let curTrip = inRangeTrips.find((t) => t.id === curId);
+        console.log(curTrip.offsetTop, "TESTING curTrip.offSetTop");
+        console.log(
+          window.scrollY + window.innerHeight,
+          "TESTING scrollY + inner H"
+        );
+        console.log(b.offsetHeight, "TESTING b.offsetH");
+        if (
+          window.scrollY + window.innerHeight - curTrip.offsetTop >=
+          b.offsetHeight
+        ) {
+          b.style.top = window.scrollY + window.innerHeight - b.offsetHeight;
+        }
+      }
+    }
+  });
+}
+
+window.onscroll = function () {
+  updateTripTextOnScroll();
+};
+
 window.initMap = function () {
   console.log("google maps api ready");
 };
-// export { initMap };
