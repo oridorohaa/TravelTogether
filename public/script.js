@@ -1,22 +1,12 @@
 window.onload = function () {
-  const toggleSwitch = document.querySelector("input[type='checkbox']");
-  const toggleIcon = document.getElementById("toggle-icon");
-
-  let currentLocationBtn = document.getElementById("location-button");
-  let currentAddressField = document.getElementById("current-location-field");
   let currentMapImg = document.getElementById("map-image");
 
   let postLocationBtn = document.getElementById("post-location-button");
   let postAddressField = document.getElementById("post-location-field");
 
-  let dailyContentContainer = document.getElementById("content-container");
-
   let timelineContainer = document.getElementById("timeline-container");
   let timelineMapImg = document.getElementById("timeline-map");
   let postTime = document.getElementById("post-time");
-
-  let quoteText = document.getElementById("quote-text");
-  let apiQoutes = [];
 
   let menuBars = document.getElementById("menu-bars");
 
@@ -34,13 +24,6 @@ window.onload = function () {
   let postDescriptionInput = document.getElementById("post-description-input");
 
   let addPostInfoContainer = document.getElementById("newpost-container");
-
-  let logOutBtn = document.getElementsByClassName("logout");
-
-  let deleteBtnDiv = document.getElementById("delete-button-div");
-
-  let dividers = document.querySelectorAll(".day-divider-container");
-  // let tripDividers = document.querySelectorAll(".trip-divider-container");
 
   colors = [
     "#5FA59B",
@@ -69,7 +52,6 @@ window.onload = function () {
       let start = tripDivs[0];
       let finish = tripDivs[1];
       sPosLeft = baselineOffset;
-      // console.log(s, f);
       if (start && finish) {
         //is to access after all the elements  laid out
         let sPos = start.getBoundingClientRect();
@@ -80,34 +62,31 @@ window.onload = function () {
         color = colors[i % colors.length];
         i++;
         let curTripHeight = fPos.top - sPos.top;
-        console.log(fPos.top - sPos.top, "cur trip Height");
-        console.log(sPosScroll, "CURsPosScroll");
         let curMid = sPosScroll + curTripHeight / 2;
-        console.log(curMid, "curMid");
 
         let tripLocation = document.createElement("tripLocation-text");
         tripLocation.id = i;
         tripLocation.className = "tripLocation-text";
         tripLocation.innerHTML = `${trip.location}`;
-        tripLocation.style.fontWeight = "400";
+        tripLocation.style.fontWeight = "500";
         tripLocation.style.letterSpacing = "3px";
         tripLocation.style.writingMode = "vertical-rl";
         tripLocation.style.transform = "scale(-1)";
         tripLocation.style.backgroundColor = "#00000000";
-        tripLocation.style.fontSize = "23px";
+        tripLocation.style.fontSize = "17px";
         tripLocation.style.position = "absolute";
         tripLocation.style.color = color;
         tripLocation.style.fontFamily = "Inter";
         tripLocation.style.whiteSpace = "nowrap";
+        tripLocation.style.letterSpacing = "5";
 
         document.body.appendChild(tripLocation);
-        console.log(tripLocation.offsetHeight, "tripLocation.offSetHeight");
         tripLocation.style.top = curMid - tripLocation.offsetHeight / 2;
 
         let tripLine = document.createElement("tripLine");
         tripLine.className = "tripLine";
         tripLine.id = i;
-        tripLine.style.width = "4px";
+        tripLine.style.width = "2.6px";
         tripLine.style.height = `${fPos.top - sPos.top}px`;
         tripLine.style.backgroundColor = color;
         tripLine.style.top = sPosScroll;
@@ -118,7 +97,6 @@ window.onload = function () {
         let x1 = tripLine.offsetTop;
         let x2 = tripLine.offsetTop + tripLine.offsetHeight;
         if (trip.location === "Greece") {
-          console.log("hi");
         }
         if (placedLines.length) {
           //get the array of all levels / offsetLefts
@@ -148,21 +126,21 @@ window.onload = function () {
         let tripDotBottom = document.createElement("tripDotB");
 
         tripDot.className = "tripDot";
-        tripDot.style.borderRadius = "50px";
+        tripDot.style.borderRadius = "50%";
         tripDot.style.backgroundColor = color;
         tripDot.style.position = "absolute";
-        tripDot.style.height = "15px";
-        tripDot.style.width = "15px";
-        tripDot.style.left = sPosLeft - 6;
+        tripDot.style.height = "14px";
+        tripDot.style.width = "14px";
+        tripDot.style.left = sPosLeft - 5;
         tripDot.style.top = sPosScroll - 7;
 
         tripDotBottom.className = "tripDotB";
-        tripDotBottom.style.borderRadius = "50px";
+        tripDotBottom.style.borderRadius = "50%";
         tripDotBottom.style.backgroundColor = color;
         tripDotBottom.style.position = "absolute";
-        tripDotBottom.style.height = "15px";
-        tripDotBottom.style.width = "15px";
-        tripDotBottom.style.left = sPosLeft - 6;
+        tripDotBottom.style.height = "14px";
+        tripDotBottom.style.width = "14px";
+        tripDotBottom.style.left = sPosLeft - 5;
         tripDotBottom.style.top = fPosScroll - 7;
 
         document.body.appendChild(tripDot);
@@ -180,7 +158,6 @@ window.onload = function () {
       ? "rgb(0 0 0 / 50%)"
       : "rgb(255 255 255 /50%)";
 
-    console.log(toggleIcon.children, "toggle children");
     // to target all elements of the same parent <div>
     toggleIcon.children[0].textContent = isDark ? "Dark Mode" : "Light Mode";
     //Dry Code
@@ -205,7 +182,6 @@ window.onload = function () {
   // Days Separators
   const days = [];
 
-  console.log("Hello World");
   let today = new Date();
   days.push(today);
 
@@ -219,7 +195,6 @@ window.onload = function () {
   // Update Current Location
   function updateCurrentMap(latitude, longitude) {
     currentMapImg.src = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=12&size=300x200&key=AIzaSyBKClGaUcZWanoyZGta_wrGZh8t-5q6pu8&style=element:geometry%7Ccolor:0xebe3cd&style=element:labels.text.fill%7Ccolor:0x523735&style=element:labels.text.stroke%7Ccolor:0xf5f1e6&style=feature:administrative%7Celement:geometry.stroke%7Ccolor:0xc9b2a6&style=feature:administrative.land_parcel%7Cvisibility:off&style=feature:administrative.land_parcel%7Celement:geometry.stroke%7Ccolor:0xdcd2be&style=feature:administrative.land_parcel%7Celement:labels.text.fill%7Ccolor:0xae9e90&style=feature:administrative.neighborhood%7Cvisibility:off&style=feature:landscape.natural%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:labels.text%7Cvisibility:off&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x93817c&style=feature:poi.park%7Celement:geometry.fill%7Ccolor:0xa5b076&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x447530&style=feature:road%7Celement:geometry%7Ccolor:0xf5f1e6&style=feature:road%7Celement:labels%7Cvisibility:off&style=feature:road.arterial%7Celement:geometry%7Ccolor:0xfdfcf8&style=feature:road.highway%7Celement:geometry%7Ccolor:0xf8c967&style=feature:road.highway%7Celement:geometry.stroke%7Ccolor:0xe9bc62&style=feature:road.highway.controlled_access%7Celement:geometry%7Ccolor:0xe98d58&style=feature:road.highway.controlled_access%7Celement:geometry.stroke%7Ccolor:0xdb8555&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x806b63&style=feature:transit.line%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:transit.line%7Celement:labels.text.fill%7Ccolor:0x8f7d77&style=feature:transit.line%7Celement:labels.text.stroke%7Ccolor:0xebe3cd&style=feature:transit.station%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:water%7Celement:geometry.fill%7Ccolor:0xb9d3c2&style=feature:water%7Celement:labels.text%7Cvisibility:off&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x92998d`;
-    console.log("Map SRC Working");
   }
 
   let latitude;
@@ -229,84 +204,32 @@ window.onload = function () {
     latitude = crd.latitude;
     longitude = crd.longitude;
 
-    console.log("Your current position is:");
-    console.log(`Latitude : ${crd.latitude}`);
-    console.log(`Longitude: ${crd.longitude}`);
     if (currentMapImg) updateCurrentMap(latitude, longitude);
   }
 
   let l = navigator.geolocation.getCurrentPosition(success);
-  console.log(latitude, "latitude");
-  console.log(longitude, "longitude");
 
   let autocomplete;
 
   // Post Location Map to Timeline
   let autocompletePost;
 
-  // Show New Quote
-  function newQuote() {
-    const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
-    quoteText.textContent = quote.text;
-
-    // Check quote length to determine the css style
-    if (quote.text.length > 70) quoteText.classList.add("long-quote");
-    else quoteText.classList.remove("long-quote");
-  }
-
-  // Quote API
-  async function getQuotes() {
-    const apiURL = "https://type.fit/api/quotes";
-    try {
-      let response = await fetch(apiURL);
-      apiQuotes = await response.json();
-      console.log(apiQuotes[4]);
-      newQuote();
-    } catch (error) {
-      console.log("whoops cant get api:", error);
-    }
-  }
-
-  // Theme Changes
-  toggleSwitch?.addEventListener("change", switchTheme);
-  // Check Local Storage for Theme
-
-  const currentTheme = localStorage.getItem("theme");
-  // always check if it exists first before you try to retreave it
-  if (currentTheme) {
-    document.documentElement.setAttribute("data-theme", currentTheme);
-    if (currentTheme === "dark" && toggleSwitch) {
-      toggleSwitch.checked = true;
-      toggleDarkLightMode(true);
-    }
-  }
-
   // Toggle Nav Bar
   function toggleNav() {
-    // Toggle: Menu Bars Open/Closed
     menuBars.classList.toggle("change");
-    //   Toggle: Menu Active
     overlay.classList.toggle("overlay-active");
     if (overlay.classList.contains("overlay-active")) {
-      //   Animate In - Overlay
-      //    substitute remove()/add()  with replace()
       overlay.classList.replace("overlay-slide-left", "overlay-slide-right");
-      // Animate In -Nav Items
-      // navAmination("out", "in");
     } else {
-      //Animate Out - Overlay
-
       overlay.classList.replace("overlay-slide-right", "overlay-slide-left");
-      // Animate Out -Nav Items
-      // navAmination("in", "out");
     }
   }
+
+  menuBars.addEventListener("click", toggleNav);
 
   function scrollToElement(pageElement) {
     positionX = 0;
     positionY = 0;
-
-    console.log("SCROLL TO FUNCTION");
 
     positionX += pageElement.offsetLeft;
     positionY += pageElement.offsetTop - 100;
@@ -321,9 +244,10 @@ window.onload = function () {
       pageElement = el;
     }
   });
-  console.log(pageElement, "PAGE ELEMENT");
 
   // ------------------------------Event Listners----------------------
+
+  postTime.defaultValue = "01-01-2023";
 
   postLocationBtn.addEventListener("click", () => {
     let l = autocompletePost.getPlace();
@@ -333,6 +257,7 @@ window.onload = function () {
       latitude = l.geometry.location.lat();
       longitude = l.geometry.location.lng();
     }
+    console.log(l);
     fetch("/postToTimeline", {
       method: "POST",
       headers: {
@@ -342,6 +267,7 @@ window.onload = function () {
         latitude,
         longitude,
         date: postTime.valueAsNumber,
+        description: l.name,
       }),
     })
       .then((e) => e.json())
@@ -353,25 +279,17 @@ window.onload = function () {
       });
   });
 
-  // Add Post Description Button
-
   //Add event listner to post description container with specific id
   let currentlyEditing;
 
   document.addEventListener("click", (e) => {
-    console.log("all");
-    console.log(e.target);
     let id;
     if (
       e.target.classList.contains("postdescription-text") ||
       e.target.classList.contains("post-desc-div")
     ) {
-      console.log("desc-div clicked");
-      console.log(e);
-
       let target = e.target.id.split("-");
       id = target[target.length - 1];
-      console.log(id, "ID");
       currentlyEditing = id;
     }
 
@@ -387,17 +305,16 @@ window.onload = function () {
 
     if (postDescriptionContainer) {
       postDescriptionInput.value = postDescriptionContainer.textContent;
-    } else {
+    } else if (postDescriptionInput) {
       postDescriptionInput.value = "";
     }
     postDescInputDiv?.classList.remove("hidden");
     postDescTextDiv?.classList.add("hidden");
-    postDescriptionInput.focus();
-    postDescriptionInput.addEventListener("blur", (e) => {
+    postDescriptionInput?.focus();
+    postDescriptionInput?.addEventListener("blur", (e) => {
       if (currentlyEditing) saveDescriptionFromInput(currentlyEditing);
       currentlyEditing = "";
     });
-    console.log("edited description");
   });
 
   function saveDescriptionFromInput(id) {
@@ -428,7 +345,6 @@ window.onload = function () {
           window.location.reload();
         }
       });
-    console.log("added description");
     // switches back to non editing mode
   }
 
@@ -438,45 +354,36 @@ window.onload = function () {
       currentlyEditing = "";
     }
   });
-  // Click on Post Description
-
-  // Add + Add Post button
-  addPostCircleBtnContanier.addEventListener("click", () => {
-    console.log("circle + button is working");
-    addPostCircleBtnContanier.classList.add("hidden");
-    console.log(addPostCircleBtnContanier, "circle container");
-    console.log(newLocationOrTripContainer, "container");
-    newLocationOrTripContainer.classList.remove("hidden");
-  });
 
   // go back to the original add button
   newLocationOrTripContainer.addEventListener("blur", (e) => {
-    console.log("add button blur");
     newLocationOrTripContainer.classList.add("hidden");
     addPostCircleBtnContanier.classList.remove("hidden");
   });
 
   let goBackBtnDiv = document.getElementById("trip-goback-button-div");
   let goBackButton = document.getElementById("trip-goback-button");
+
   // Add new Location Button
   newLocationBtn.addEventListener("click", () => {
     newLocationOrTripContainer.classList.add("hidden");
     addPostInfoContainer.classList.remove("hidden");
+    document.getElementById("post-location-field").focus();
     goBackBtnDiv.classList.remove("hidden");
   });
 
   // Add new Trip Buttton
   newTripBtn.addEventListener("click", () => {
     newLocationOrTripContainer.classList.add("hidden");
-    console.log(newTripContainer, "new trip Container");
     newTripContainer.classList.remove("hidden");
     goBackBtnDiv.classList.remove("hidden");
+    console.log(document.getElementById("new-trip-location"), "TESTING");
+    document.getElementById("new-trip-location").focus();
   });
 
   // Go Back Button Event Listner
 
   goBackButton.addEventListener("click", () => {
-    console.log("INSIDE GOBACK BUTTON");
     if (newTripContainer.classList.contains("hidden")) {
       addPostInfoContainer.classList.add("hidden");
     } else if (addPostInfoContainer.classList.contains("hidden")) {
@@ -492,8 +399,6 @@ window.onload = function () {
 
   // Post Trip Button
   postTripBtn.addEventListener("click", () => {
-    console.log(newTripFromDate.value, "from Date VALUE");
-    console.log(newTripLocation.value, "new trip location VALUE");
     let fromDate = new Date(newTripFromDate.value);
     let toDate = new Date(newTripToDate.value);
     let location = newTripLocation.value;
@@ -517,8 +422,21 @@ window.onload = function () {
       });
   });
 
+  // MEDIA trip/ map buttons
+  document
+    .getElementById("media-overlay-trip-btn")
+    .addEventListener("click", (e) => {
+      console.log("Media Button working ");
+      document.getElementById("media-overlay-trip-btn").classList.add("hidden");
+      document.getElementById("media-overlay-map-btn").classList.add("hidden");
+
+      document
+        .getElementById("media-trip-container")
+        .classList.remove("hidden");
+    });
+
   autocompletePost = new google.maps.places.Autocomplete(postAddressField, {
-    types: ["(cities)"],
+    types: [],
   });
 
   // autocompletePlace
@@ -535,7 +453,6 @@ window.onload = function () {
     b.forEach((x) => x.remove());
     c.forEach((x) => x.remove());
     d.forEach((x) => x.remove());
-    console.log("resizing function");
     setTripDivs(trips);
   }
 
@@ -545,9 +462,6 @@ window.onload = function () {
 };
 
 function updateTripTextOnScroll() {
-  console.log(window.scrollY, "srollY");
-  console.log(window.innerHeight + window.scrollY, "scrollY+Inner Height");
-
   let top = window.scrollY;
   let bottom = window.scrollY + window.innerHeight;
 
@@ -568,12 +482,9 @@ function updateTripTextOnScroll() {
   b.forEach((b) => {
     //when only visible from the top
     if (b.offsetTop < window.scrollY) {
-      console.log(window.scrollY, "scrollY");
       let curId = b.id;
       if (inRangeTrips.filter((x) => x.id === curId).length) {
         let curTrip = inRangeTrips.find((t) => t.id === curId);
-        console.log(curId, "TESTING curID");
-        console.log("TESTING: curtrip line height", curTrip);
         if (
           b.offsetHeight <=
           curTrip.offsetHeight - (window.scrollY - curTrip.offsetTop)
@@ -589,12 +500,6 @@ function updateTripTextOnScroll() {
       let curId = b.id;
       if (inRangeTrips.filter((x) => x.id === curId).length) {
         let curTrip = inRangeTrips.find((t) => t.id === curId);
-        console.log(curTrip.offsetTop, "TESTING curTrip.offSetTop");
-        console.log(
-          window.scrollY + window.innerHeight,
-          "TESTING scrollY + inner H"
-        );
-        console.log(b.offsetHeight, "TESTING b.offsetH");
         if (
           window.scrollY + window.innerHeight - curTrip.offsetTop >=
           b.offsetHeight

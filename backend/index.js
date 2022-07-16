@@ -172,7 +172,7 @@ app.post("/doregister", async (req, res) => {
   }
 });
 
-app.get("/:username", async (req, res) => {
+app.get("/:username", authUser, async (req, res) => {
   const currentUser = await User.findOne({ username: req.params.username });
   console.log("CURRENT USER:", currentUser);
   if (!currentUser) return res.redirect("/");

@@ -24,14 +24,29 @@
   >
 
     {{!-- Overlay --}}
-     <div class="overlay overlay-slide-left" id="overlay">
+     <div class="overlay overlay-slide-left overlay-media media-overlay" id="overlay">
       <nav class="user-navbar">
       <form action="/" method="GET">
-        <li><button style="font-family: Inter;">Home</button></li>
+        <li class="overlay-home-button"><button  style="font-family: Inter; ">Home</button></li>
+        {{!-- <li class="overlay-trip-button" ><button style="font-family: Inter;">New Trip</button></li> --}}
       </form>
+        <li class="overlay-trip-button" style="width:100%" ><button id="media-overlay-trip-btn" style="font-family: Inter;">New Trip</button></li>
+        {{!-- Media addd trip input section div --}}
+        <div class ="media-trip-container hidden" id="media-trip-container">
+              <h3 class ="from-h3">From:</h3>
+              <input class="new-trip-from-date" id="new-trip-from-date"  name="from" type="date">
+              <h3 class="to-h3" >To:</h3>
+              <input class="new-trip-to-date"  id="new-trip-to-date" name="to" type="date">
+              <h3 class="where-h3">Where:</h3>
+              <input class="new-trip-location" id="new-trip-location" type="text" placeholder="enter location" >
+              <button class="post-trip-button" id="post-trip-button">post trip dates</button>
+        </div>
       <form action="/" method="GET">
-          <li class="visit-friends" ><button style="font-family: Inter;">Visit Friends</button></li>
+          <li class="overlay-friends-button" ><button style="font-family: Inter;">Visit Friends</button></li>
+          {{!-- <li class="overlay-map-button" ><button style="font-family: Inter;">New Map</button></li> --}}
       </form>
+          <li class="overlay-map-button"  style="width:100%"><button id="media-overlay-map-btn" style="font-family: Inter;">New Map</button></li>
+
       <form action="logout" method="GET">
           <li  class="logout" ><button style="font-family: Inter;">Log Out</button></li>
       </form> 
@@ -45,9 +60,22 @@
       <div class="bar3"></div>
     </div>
     {{!-- User Name --}}
-    <h1 class="user-name-h1" style="font-family:Oswald">{{user.username}}</h1>
+    <h1 class="user-name-h1" style="font-family:Oswald; letter-spacing:2; font-size:52px">{{user.username}}</h1>
     <div class="status-circle" id="status-circle"></div>
-    <h3 class="hours-ago-h3">5 hours ago </h3>
+    <h3 class="hours-ago-h3" id="online-offline">5 hours ago </h3>
+    <script>
+      window.addEventListener("load",(e)=>{
+        if(navigator.onLine){
+          console.log("ONLINE!")
+          document.getElementById("online-offline").innerHTML="online"
+
+        }else{
+           document.getElementById("status-circle").style.color="orange"
+          document.getElementById("online-offline").innerHTML="offline"
+
+        }
+      })
+    </script>
 
   
 
@@ -55,53 +83,45 @@
     <div class="location-container" id="location-container">
       <img
         id="map-image"
-        style="filter: saturate(60%);opacity: 1; object-fit: contain"
+        style="filter: saturate(60%);opacity: 1; object-fit: contain; width:250px"
         alt=""
       />
     </div>
-    <h3 class="loc-status-h3">Status Update </h3>
+    <h3 class="loc-status-h3">Current Location</h3>
     
 
     {{!Make a new Post to the  Timeline }}
-    <div class="newpost-addbtn-container " id="newpost-addbtn-container">
-      <img src="/static/add.png" class="newpost-add-button" id="newpost-add-button" alt="">
-      </div>
-    <div class="location-trip-container hidden" id="location-trip-container" style="top:670px">
-      <button class="new-trip-button" id="new-trip-button">new trip dates</button>
-      <button class="new-location-button" id="new-location-button">new location</button>
+   
+    <div class="location-trip-container" id="location-trip-container">
+      <button class="new-trip-button" id="new-trip-button" style="">add new trip </button>
+      <button class="new-location-button" id="new-location-button" style="">add new place</button>
     </div>
     <div class="hidden" id="trip-goback-button-div" >
-    <button class="trip-goback-button" id ="trip-goback-button"><img src="/static/left-arrow.png" style="height:30px; width:30px; opacity:.7"></button>
+    <button class="trip-goback-button" id ="trip-goback-button"><img src="/static/arrow.png"
+     style="height:30px; width:30px; opacity:.5"></button>
     </div>
     <div class=" hidden newpost-container" id="newpost-container">
       <input name="mappost"
+        class="new-map-input"
         id="post-location-field"
         type="text"
-        placeholder="post location to your timeline"
+        placeholder="search for place"
       />
-      <input name="date" id="post-time" type="datetime-local" placeholder="choose the time of the post" >
+      <input name="date" 
+        id="post-time"
+        class="map-time-input"
+       type="datetime-local"  >
       <button class="post-location-button"
         id="post-location-button">post to timeline</button>
     </div>
     <div class="newtrip-container hidden" id="newtrip-container">
-      <h3 style="margin-bottom:0px; padding-bottom:0px">From:</h3>
-      <input id="new-trip-from-date" style="margin-top:0px"  name="from" type="date">
-      <h3 style="margin-bottom:0px; margin-top:3px;">To:</h3>
-      <input id="new-trip-to-date" style="margin-top:0px" name="to" type="date">
-      <input id="new-trip-location" type="text" placeholder="enter trip location">
-      <button style="
-        margin-top:10px; 
-        width:100%;
-        height: 30px;
-        border-radius: 40px;
-        background-color:rgba(240, 248, 255, 0);
-        border: 3px solid white;
-        display: inline-flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding-top:3px;
-      " class="post-trip-button" id="post-trip-button">post trip dates</button>
+      <h3 class ="from-h3">From:</h3>
+      <input class="new-trip-from-date" id="new-trip-from-date"  name="from" type="date">
+      <h3 class="to-h3" >To:</h3>
+      <input class="new-trip-to-date" id="new-trip-to-date" name="to" type="date">
+      <h3 class="where-h3">Where:</h3>
+      <input class="new-trip-location" id="new-trip-location" type="text" placeholder="enter location" >
+      <button class="post-trip-button" id="post-trip-button">post trip dates</button>
     </div>
 
 
@@ -121,12 +141,9 @@
              <h3 class="post-time-h3">{{this.time}} </h3>
             </div>
             <div class="post-desc-input-div hidden" id="post-desc-input-div-{{this._id}}" style="height:50px">
-            <input class="post-description-input" id="post-description-input-{{this._id}}" placeholder="event description" type="text">
+                <input class="post-description-input" id="post-description-input-{{this._id}}" placeholder="event description" type="text">
             </div>
-            
-            <div>
-            </div>
-            <img class="post-image" style="filter: saturate(60%);opacity: .8;" width="370" height="120" id="timeline-map" src='https://maps.googleapis.com/maps/api/staticmap?center={{this.latitude}},{{this.longitude}}&zoom=9&scale=2&size=370x120&key=AIzaSyBKClGaUcZWanoyZGta_wrGZh8t-5q6pu8&style=element:geometry%7Ccolor:0xebe3cd&style=element:labels.text.fill%7Ccolor:0x523735&style=element:labels.text.stroke%7Ccolor:0xf5f1e6&style=feature:administrative%7Celement:geometry.stroke%7Ccolor:0xc9b2a6&style=feature:administrative.land_parcel%7Cvisibility:off&style=feature:administrative.land_parcel%7Celement:geometry.stroke%7Ccolor:0xdcd2be&style=feature:administrative.land_parcel%7Celement:labels.text.fill%7Ccolor:0xae9e90&style=feature:administrative.neighborhood%7Cvisibility:off&style=feature:landscape.natural%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:labels.text%7Cvisibility:off&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x93817c&style=feature:poi.park%7Celement:geometry.fill%7Ccolor:0xa5b076&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x447530&style=feature:road%7Celement:geometry%7Ccolor:0xf5f1e6&style=feature:road%7Celement:labels%7Cvisibility:off&style=feature:road.arterial%7Celement:geometry%7Ccolor:0xfdfcf8&style=feature:road.highway%7Celement:geometry%7Ccolor:0xf8c967&style=feature:road.highway%7Celement:geometry.stroke%7Ccolor:0xe9bc62&style=feature:road.highway.controlled_access%7Celement:geometry%7Ccolor:0xe98d58&style=feature:road.highway.controlled_access%7Celement:geometry.stroke%7Ccolor:0xdb8555&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x806b63&style=feature:transit.line%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:transit.line%7Celement:labels.text.fill%7Ccolor:0x8f7d77&style=feature:transit.line%7Celement:labels.text.stroke%7Ccolor:0xebe3cd&style=feature:transit.station%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:water%7Celement:geometry.fill%7Ccolor:0xb9d3c2&style=feature:water%7Celement:labels.text%7Cvisibility:off&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x92998d'/>
+            <img class="post-image" style="filter: saturate(60%);opacity: .8;" width="300" height="110" id="timeline-map" src='https://maps.googleapis.com/maps/api/staticmap?center={{this.latitude}},{{this.longitude}}&zoom=12&markers=size:small|{{this.latitude}},{{this.longitude}}&scale=2&size=300x110&key=AIzaSyBKClGaUcZWanoyZGta_wrGZh8t-5q6pu8&style=element:geometry%7Ccolor:0xebe3cd&style=element:labels.text.fill%7Ccolor:0x523735&style=element:labels.text.stroke%7Ccolor:0xf5f1e6&style=feature:administrative%7Celement:geometry.stroke%7Ccolor:0xc9b2a6&style=feature:administrative.land_parcel%7Cvisibility:off&style=feature:administrative.land_parcel%7Celement:geometry.stroke%7Ccolor:0xdcd2be&style=feature:administrative.land_parcel%7Celement:labels.text.fill%7Ccolor:0xae9e90&style=feature:administrative.neighborhood%7Cvisibility:off&style=feature:landscape.natural%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:labels.text%7Cvisibility:off&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x93817c&style=feature:poi.park%7Celement:geometry.fill%7Ccolor:0xa5b076&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x447530&style=feature:road%7Celement:geometry%7Ccolor:0xf5f1e6&style=feature:road%7Celement:labels%7Cvisibility:off&style=feature:road.arterial%7Celement:geometry%7Ccolor:0xfdfcf8&style=feature:road.highway%7Celement:geometry%7Ccolor:0xf8c967&style=feature:road.highway%7Celement:geometry.stroke%7Ccolor:0xe9bc62&style=feature:road.highway.controlled_access%7Celement:geometry%7Ccolor:0xe98d58&style=feature:road.highway.controlled_access%7Celement:geometry.stroke%7Ccolor:0xdb8555&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x806b63&style=feature:transit.line%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:transit.line%7Celement:labels.text.fill%7Ccolor:0x8f7d77&style=feature:transit.line%7Celement:labels.text.stroke%7Ccolor:0xebe3cd&style=feature:transit.station%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:water%7Celement:geometry.fill%7Ccolor:0xb9d3c2&style=feature:water%7Celement:labels.text%7Cvisibility:off&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x92998d'/>
           </div>
           <div class="post-dot"></div>
           <div class="post-triangle"></div>
@@ -135,11 +152,11 @@
           {{#if this.loc}}
           <div class="day-divider-container id-{{this.loc}}" id="day-divider-container-{{this.loc}}">
           </div>
-          <h3 class="divider-time" style="">{{this.t}}</h3>
+          <h3 class="divider-time" >{{this.t}}</h3>
           {{else}}
           <div class="day-divider-container" id="day-divider-container">
           </div>
-           <h3 class="divider-time" style="">{{this.t}}</h3>
+           <h3 class="divider-time" >{{this.t}}</h3>
            {{/if}} 
           {{!-- {{/if}} --}}
         {{/if}}
