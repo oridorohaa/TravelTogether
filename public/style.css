@@ -439,23 +439,29 @@ input:checked + .slider::before {
 /* -----------------------timelineHome.hbs--------------------------------- */
 /* Status  */
 
+.media-name-status-container{
+
+display: none;
+
+}
+
 .user-name-h1 {
   color: rgb(48, 47, 47);
-  position: fixed;
+  /* position: fixed; */
   font-family: Inter;
   font-size: 55px;
   font-weight: 400;
-  top: 65px;
-  left: 40px;
+  /* top: 65px;
+  left: 40px; */
   box-shadow: none;
   background-color: rgba(255, 255, 255, 0);
 }
 
 .hours-ago-h3 {
   color: #b4b4b4;
-  position: fixed;
-  top: 93px;
-  left: 244px;
+  position: relative;
+  top: 23px;
+  left: 6px;
   box-shadow: none;
   background-color: rgba(255, 255, 255, 0);
   font-size: 18px;
@@ -480,9 +486,10 @@ input:checked + .slider::before {
   height: 13px;
   width: 13px;
   border-radius: 50%;
-  position: fixed;
-  top: 95px;
-  left: 225px;
+  position: relative;
+  float: right;
+  top: 26px;
+  left: 3px;
   background-color: #50e3c2;
 }
 .status-h2 {
@@ -506,6 +513,19 @@ input:checked + .slider::before {
   padding-left: 5px;
   padding-right: 5px;
   padding-top: 20px;
+}
+
+.media-name-status-container{
+  display:flex;
+  flex-direction:row;
+  /* padding: 10; */
+  position: fixed;
+  font-family: Inter;
+  font-size: 55px;
+  font-weight: 400;
+  top: 65px;
+  left: 40px;
+
 }
 
 .long-quote {
@@ -1050,12 +1070,7 @@ input{
   .loc-status-h3 {
     display: none;
   }
-  .status-circle {
-    display: none;
-  }
-  .hours-ago-h3 {
-    display: none;
-  }
+  
   .newpost-add-button {
     display: none;
   }
@@ -1108,6 +1123,33 @@ input{
   }
   .user-name-h1 {
     left: 41px;
+  }
+
+  .status-circle {
+    position: relative;
+    top:13px;
+    left:2px;
+
+  }
+
+  .hours-ago-h3{
+    position:relative;
+    top:-4px;
+    left:-107px;
+  }
+
+
+  .media-name-status-container{
+    display:flex;
+    flex-direction: column;
+    padding: 10;
+    position: fixed;
+    font-family: Inter;
+    font-size: 55px;
+    font-weight: 400;
+    top: 65px;
+    left: 40px;
+
   }
   .bar1,
   .bar2,

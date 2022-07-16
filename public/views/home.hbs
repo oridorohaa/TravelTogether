@@ -60,9 +60,11 @@
       <div class="bar3"></div>
     </div>
     {{!-- User Name --}}
+    <div class="media-name-status-container" >
     <h1 class="user-name-h1" style="font-family:Oswald; letter-spacing:2; font-size:52px">{{user.username}}</h1>
     <div class="status-circle" id="status-circle"></div>
     <h3 class="hours-ago-h3" id="online-offline">5 hours ago </h3>
+    </div>
     <script>
       window.addEventListener("load",(e)=>{
         if(navigator.onLine){
@@ -76,6 +78,7 @@
         }
       })
     </script>
+   
 
   
 
