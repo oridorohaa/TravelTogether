@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Travel Together App </title>
-    <link rel="shortcut icon" href="/static/alien.png" type="image/x-icon" />
+    <title>Plan It</title>
+    <link rel="icon" href="/static/thumbtag.png" type="image/x-icon" />
     <!-- Bootstrap , fonts & icons  -->
     <link rel="stylesheet" href="/static/bootstrap.css" />
     <link rel="stylesheet" href="./fonts/icon-font/css/style.css" />
@@ -66,18 +66,22 @@
           <nav class="navbar site-navbar">
             <!-- Brand Logo-->
             <div>
-              <img
-                src="/static/plan_logo_light.png"
+              {{! <img
+                src="/static/planit_logo.png"
                 style="display: block;
                   margin-left: 0;
                   
                   width: 20%"
                 alt=""
-              />
+              /> }}
             </div>
             <div class="menu-block-wrapper">
               <div class="menu-overlay"></div>
-              <nav class="menu-block" id="append-menu-header">
+              <nav
+                class="menu-block"
+                style="margin-top:50px"
+                id="append-menu-header"
+              >
                 <div class="mobile-menu-head">
                   <div class="go-back">
                     <i class="fa fa-angle-left"></i>
@@ -94,20 +98,7 @@
                     >About
                       <i class="fas fa-angle-down"></i>
                     </a>
-                    {{! <ul class="sub-menu" id="submenu-9">
-                      <li class="sub-menu--item">
-                        <a href="#">Dropdown 01</a>
-                      </li>
-                      <li class="sub-menu--item">
-                        <a href="#">Dropdown 02</a>
-                      </li>
-                      <li class="sub-menu--item">
-                        <a href="#">Dropdown 03</a>
-                      </li>
-                      <li class="sub-menu--item">
-                        <a href="#">Dropdown 04</a>
-                      </li>
-                    </ul> }}
+
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link-item">Blog</a>
@@ -121,7 +112,7 @@
                 </ul>
               </nav>
             </div>
-            <div
+            {{! <div
               class="header-btns header-btn-l-17 ms-auto d-none d-xs-inline-flex align-items-center"
             >
               <a class="btn sign-in-btn focus-reset" href="/login">
@@ -130,11 +121,11 @@
               <a class="start-trail-btn btn focus-reset" href="/register">
                 Register
               </a>
-            </div>
+            </div> }}
             <!-- mobile menu trigger -->
-            <div class="mobile-menu-trigger">
+            {{! <div class="mobile-menu-trigger">
               <span></span>
-            </div>
+            </div> }}
             <!--/.Mobile Menu Hamburger Ends-->
           </nav>
         </div>
@@ -143,7 +134,7 @@
       <!-- Hero Area -->
       <div
         class="hero-area-l-17 position-relative"
-        style="background:url(/static/splash_screen_1.png);"
+        style="background:url(/static/travel_map.png);"
       >
         <div class="container">
           <div class="row position-relative justify-content-center">
@@ -155,19 +146,32 @@
             >
               <div>
                 <img
-                  src="/static/plan_logo_light.png"
+                  src="/static/planit_logo_large.png"
                   style="display: block;
+                  margin-top:85;
                   margin-left: auto;
                   margin-right: auto;
-                  width: 40%;"
+                  width: 70%;"
                   alt=""
                 />
               </div>
               <div class="content text-center">
-                <h1>Manage your plans, faster!</h1>
-                <p>Travel Together helps you create custom timeline that keeps
-                  your plans organized and your world more connected.</p>
+                <h1
+                  class="create-story-h1"
+                  style="font-size:27px; font-weight:200; 
+                  color:rgb(53, 48, 48);
+                  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                  margin-bottom:90px;
+                  /* text-decoration: underline; */
+                  text-transform: capitalize;"
+                >create your own story</h1>
+                <p></p>
                 <a href="/register" class="btn">Register</a>
+                <a
+                  href="/login"
+                  class="login-btn btn"
+                  style="background:none; color:rgb(53, 48, 48)"
+                >Have an account? Sign In</a>
                 {{! <span>No credit card required</span> }}
               </div>
             </div>
@@ -193,9 +197,10 @@
                     style="width: 50px; margin-bottom:35px"
                   />
                 </div>
-                <h4 style="color:#282828">Single Platform</h4>
-                <p style="color:#464343">Create a custom timeline with easy
-                  visual access to your past and future plans.</p>
+                <h4 style="color:#554d4d">Single Platform</h4>
+                <p style="color:#554d4d">Plan it helps you create a custom
+                  timeline that keeps your plans organized and your world more
+                  connected.</p>
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-9">
@@ -207,8 +212,8 @@
                     alt=""
                   />
                 </div>
-                <h4 style="color:#282828">Faster Connections</h4>
-                <p style="color:#464343">Sync your timeline with your family and
+                <h4 style="color:#554d4d">Faster Connections</h4>
+                <p style="color:#554d4d">Sync your timeline with your family and
                   friends for easier more enjoyable visual experince.</p>
               </div>
             </div>
@@ -221,8 +226,8 @@
                     alt=""
                   />
                 </div>
-                <h4 style="color:#282828">Everything in One Place</h4>
-                <p style="color:#464343">Stay connected while creating a unique
+                <h4 style="color:#554d4d">Everything in One Place</h4>
+                <p style="color:#554d4d">Stay connected while creating a unique
                   visual platform for your life events.
                 </p>
               </div>
@@ -246,18 +251,18 @@
                     <div class="image-1">
                       <img
                         class="screenshot-img"
-                        style="width:400px"
-                        src="/static/screenshot_4.png"
+                        style="width:361px"
+                        src="/static/screenshot_1.png"
                         alt=""
                       />
                     </div>
-                    <div class="image-2">
+                    <!-- <div class="image-2">
                       <img
                         src="/static/screenshot_1.png"
                         style="width:600px"
                         alt=""
                       />
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div
@@ -269,10 +274,16 @@
                   <div class="content section-heading-11">
                     <h2 style="color:#282828">
                       Manage everything faster in a single place.</h2>
-                    <p style="color:#464343">Travel Together gives you the
-                      platorm to share your location, create an easier visual
-                      experience and more.</p>
+                    <p style="color:#464343">Plan It gives you the platorm to
+                      share your location, create a unique visual experience and
+                      more.</p>
                     <a href="/register" class="btn focus-reset">Register</a>
+                    <a
+                      href="/login"
+                      class="btn focus-reset"
+                      style="background:none; color:rgb(53, 48, 48); margin-top:10px"
+                    >Have an Account? Sign in</a>
+
                   </div>
                 </div>
               </div>
@@ -332,8 +343,8 @@
                     href="https://www.youtube.com/embed/9yc1lfFZX-I"
                   ><i class="fas fa-play font-size-7"></i></a>
                   <h2>We help you stay connected</h2>
-                  <p>No matter where you are Travel Together helps you stay up
-                    to date with your friends and family.
+                  <p>No matter where you are Plan It helps you stay up to date
+                    with your friends and family.
                   </p>
                 </div>
               </div>
@@ -633,7 +644,7 @@
             </div>
             <div class="col">
               <div class="footer-widget widget4">
-                <p class="widget-title">Contact Us</p>
+                <p class="widget-title">Contact </p>
                 <ul class="widget-links pl-0 list-unstyled">
                   {{! <li><a href="">Catalog</a></li>
                   <li><a href="">Popular</a></li>

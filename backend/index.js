@@ -75,10 +75,10 @@ function decoratePost(post) {
   post = post.toObject();
 
   date = new Date(post.date);
-  console.log(date, "POST DATE");
+  // console.log(date, "POST DATE");
   let time;
   let hours = date.getHours();
-  console.log(hours, "POST TIME/Hours");
+  // console.log(hours, "POST TIME/Hours");
   if (hours === 12) {
     time = `${hours}:${String(date.getMinutes()).padStart(2, "0")}pm`;
   } else if (hours > 12) {
@@ -172,9 +172,13 @@ app.post("/doregister", async (req, res) => {
   }
 });
 
+// user profile
 app.get("/:username", async (req, res) => {
   const currentUser = await User.findOne({ username: req.params.username });
-  console.log("CURRENT USER:", currentUser);
+
+  //
+
+  // console.log("CURRENT USER:", currentUser);
   if (!currentUser) return res.redirect("/");
 
   let posts = await Post.find({ owner: currentUser._id }).sort({ date: 1 });
@@ -230,7 +234,7 @@ app.get("/:username", async (req, res) => {
   days.map(decorateDate);
 
   let output = [];
-  console.log(days, "DAYS");
+  // console.log(days, "DAYS");
   output = [...days, ...postsObj.filter((x) => x.date)];
   output.sort((b, a) => {
     // let firstDate;
@@ -251,7 +255,7 @@ app.get("/:username", async (req, res) => {
   });
 
   output = output.reverse();
-  console.log("OUTPUT", output);
+  // console.log("OUTPUT", output);
 
   //when adding a divider, check if the last one is a divider and remove it because we don't want multiple dividers in a row without content
 
@@ -290,7 +294,7 @@ app.get("/:username", async (req, res) => {
   }
   // console.log(MAP_API_STYLE);
   // console.log(trips, "------TRIPS");
-  console.log("start-------------", output, "---------------------ALL OUTPUT");
+  // console.log("start-------------", output, "---------------------ALL OUTPUT");
   res.render("home", {
     user: currentUser.toObject(),
     postsObj,
@@ -370,9 +374,10 @@ app.get("/editDescrip", authUser, async (req, res) => {
 // ---------------------Trip Routers
 app.post("/newTriptoTimeline", authUser, async (req, res) => {
   console.log(req.body);
+  console.log(req.user._id);
   const trip = new Trip({ ...req.body, owner: req.user._id });
   await trip.save();
-
+  console.log(trip);
   res.json({ status: "success" });
 });
 

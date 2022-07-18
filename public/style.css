@@ -277,32 +277,35 @@ section#skills {
 .login-container {
   width: 280px;
   height: 350px;
-  display: flex;
-
   justify-content: center;
   margin: 40px;
   margin-top:0px;
-  /* margin-top: 200px; */
   padding: 20px 50px;
-  border-radius: 15px 60px;
-  /* box-shadow: var(--box-shadow); */
+  border-radius: 5px;
   z-index: 2;
  
 }
-.reg-container {
-  width: 450px;
-  height: 450px;
 
+.reg-container {
+  width: 380px;
+  height: 450px;
   justify-content: center;
   margin: 40px;
-  padding: 25px 50px;
+  /* padding: 20px 50px; */
   border-radius: 5px;
-  /* box-shadow: var(--box-shadow); */
   z-index: 2;
   
 }
 
 .reg-info-container {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.login-info-container{
   width: 95%;
   display: flex;
   flex-direction: column;
@@ -564,6 +567,27 @@ display: none;
 .status-container:hover {
  
   background-color: rgba(245, 245, 245, 0.856);
+}
+
+.register-h2{
+  font-family: Inter;
+  color:rgb(95, 89, 84);
+  font-weight:500;
+  font-size:28px;
+  display:flex;
+  padding-top:50;
+  justify-content:center;
+  padding-bottom:11px;
+}
+
+.create-story-h1 {
+  font-size: 27px;
+  font-weight: 200;
+  color: rgb(53, 48, 48);
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  margin-bottom: 90px;
+  text-transform: capitalize;
 }
 
 /* Timeline */
@@ -944,13 +968,14 @@ display: none;
   transform: translateX(-100vw);
 }
 
-.overlay-map-button{
+.media-overlay-map-button{
   display:none
 }
 
-.overlay-trip-button{
+.media-overlay-trip-button{
   display:none
 }
+
 /* Nav Menu Items */
 
 .user-navbar {
@@ -1020,22 +1045,32 @@ display: none;
     overflow-x: hidden !important;
 } */
 
+.register-h2{
+  font-size: 18px;
+}
+
+.create-story-h1{
+  font-size:20px;
+  font-weight: 800;
+
+}
   .overlay-home-button{
     display:none
   }
-  .overlay-trip-button{
+  .media-overlay-trip-button{
     display:inline-block
   }
   .overlay-friends-button{
     display:none
   }
 
-  .overlay-map-button{
+  .media-overlay-map-button{
     display:inline-block
   }
 
 
-  .post-trip-button{
+  .post-trip-button,.post-location-button{
+    font-size: 19px;
     width:80%;
     margin-left:35;
     color:#fff;
@@ -1052,8 +1087,23 @@ display: none;
     margin-top: 10px;
     padding-bottom: 0px;
     color: #fafafa;
+    font-size:23px;
 }
 
+.map-time-input,
+.new-trip-from-date, .new-trip-to-date{
+  padding-right:30
+}
+
+
+
+.new-map-input::placeholder{
+  color: #fafafa
+}
+
+.new-trip-location::placeholder{
+  color: #fafafa
+}
 input{
   background: none;
 }

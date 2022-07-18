@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    createdDate: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedDate: {
+      type: Date,
+      default: Date.now,
+    },
     likes: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Likes",

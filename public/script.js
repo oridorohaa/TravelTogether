@@ -20,7 +20,8 @@ window.onload = function () {
   let newTripBtn = document.getElementById("new-trip-button");
   let newTripContainer = document.getElementById("newtrip-container");
   let postTripBtn = document.getElementById("post-trip-button");
-
+  let mediaTripBtn = document.getElementById("media-trip-button");
+  console.log(postTripBtn);
   let postDescriptionInput = document.getElementById("post-description-input");
 
   let addPostInfoContainer = document.getElementById("newpost-container");
@@ -52,6 +53,7 @@ window.onload = function () {
       let start = tripDivs[0];
       let finish = tripDivs[1];
       sPosLeft = baselineOffset;
+
       if (start && finish) {
         //is to access after all the elements  laid out
         let sPos = start.getBoundingClientRect();
@@ -61,6 +63,7 @@ window.onload = function () {
 
         color = colors[i % colors.length];
         i++;
+        console.log(i);
         let curTripHeight = fPos.top - sPos.top;
         let curMid = sPosScroll + curTripHeight / 2;
 
@@ -151,7 +154,6 @@ window.onload = function () {
   if (trips) {
     setTripDivs(trips);
   }
-  //Light / Dark Modes
   //DRY CODE --- putting two functions into one using turnary
   function toggleDarkLightMode(isDark) {
     nav.style.backgroundColor = isDark
@@ -225,7 +227,23 @@ window.onload = function () {
     }
   }
 
-  menuBars.addEventListener("click", toggleNav);
+  menuBars.addEventListener("click", () => {
+    toggleNav();
+    if (
+      !document
+        .getElementById("media-trip-container")
+        .classList.contains("hidden")
+    ) {
+      document.getElementById("media-trip-container").classList.add("hidden");
+    }
+    if (
+      !document
+        .getElementById("media-map-container")
+        .classList.contains("hidden")
+    ) {
+      document.getElementById("media-map-container").classList.add("hidden");
+    }
+  });
 
   function scrollToElement(pageElement) {
     positionX = 0;
@@ -249,8 +267,37 @@ window.onload = function () {
 
   postTime.defaultValue = "01-01-2023";
 
-  postLocationBtn.addEventListener("click", () => {
-    let l = autocompletePost.getPlace();
+  let mediaPostAddressField = document.getElementById(
+    "media-post-location-field"
+  );
+
+  let mediaPostTime = document.getElementById("media-post-time");
+
+  mediaPostTime.defaultValue = "01-01-2023";
+  // autocompletePlace
+  autocompletePost = new google.maps.places.Autocomplete(postAddressField, {
+    types: [],
+  });
+
+  let mediaAutocompletePost = new google.maps.places.Autocomplete(
+    mediaPostAddressField,
+    {
+      types: [],
+    }
+  );
+
+  console.log(autocompletePost, "AutocompletePost");
+  console.log(mediaAutocompletePost, "media AutoComplete");
+  function postLocation(time) {
+    // console.log(autocompletePost, "autoPost");
+    // console.log(mediaAutocompletePost, "MediaautoPost");
+    let l;
+
+    if (!autocompletePost.getPlace()) {
+      l = mediaAutocompletePost.getPlace();
+    } else {
+      l = autocompletePost.getPlace();
+    }
     if (!l) {
       alert("Please choose a location");
     } else {
@@ -266,7 +313,7 @@ window.onload = function () {
       body: JSON.stringify({
         latitude,
         longitude,
-        date: postTime.valueAsNumber,
+        date: time.valueAsNumber,
         description: l.name,
       }),
     })
@@ -277,6 +324,15 @@ window.onload = function () {
           window.location.reload();
         }
       });
+  }
+  let mediaPostLocationBtn = document.getElementById("media-post-map-button");
+
+  mediaPostLocationBtn.addEventListener("click", () => {
+    postLocation(mediaPostTime);
+  });
+
+  postLocationBtn.addEventListener("click", () => {
+    postLocation(postTime);
   });
 
   //Add event listner to post description container with specific id
@@ -377,7 +433,6 @@ window.onload = function () {
     newLocationOrTripContainer.classList.add("hidden");
     newTripContainer.classList.remove("hidden");
     goBackBtnDiv.classList.remove("hidden");
-    console.log(document.getElementById("new-trip-location"), "TESTING");
     document.getElementById("new-trip-location").focus();
   });
 
@@ -397,11 +452,17 @@ window.onload = function () {
   let newTripToDate = document.getElementById("new-trip-to-date");
   let newTripLocation = document.getElementById("new-trip-location");
 
+  let mediaTripFrom = document.getElementById("media-new-trip-from-date");
+  let mediaTripTo = document.getElementById("media-new-trip-to-date");
+  let mediaTripLoc = document.getElementById("media-new-trip-location");
+
   // Post Trip Button
-  postTripBtn.addEventListener("click", () => {
-    let fromDate = new Date(newTripFromDate.value);
-    let toDate = new Date(newTripToDate.value);
-    let location = newTripLocation.value;
+  function postTrip(from, to, loc) {
+    let fromDate = new Date(from.value);
+    let toDate = new Date(to.value);
+    let location = loc.value;
+
+    console.log(location, "location");
 
     fetch("/newTriptoTimeline", {
       method: "POST",
@@ -420,7 +481,15 @@ window.onload = function () {
           window.location.reload();
         }
       });
-  });
+  }
+
+  postTripBtn.addEventListener("click", () =>
+    postTrip(newTripFromDate, newTripToDate, newTripLocation)
+  );
+
+  mediaTripBtn.addEventListener("click", () =>
+    postTrip(mediaTripFrom, mediaTripTo, mediaTripLoc)
+  );
 
   // MEDIA trip/ map buttons
   document
@@ -433,13 +502,34 @@ window.onload = function () {
       document
         .getElementById("media-trip-container")
         .classList.remove("hidden");
+
+      if (
+        !document
+          .getElementById("media-map-container")
+          .classList.contains("hidden")
+      ) {
+        console.log("remove");
+        document.getElementById("media-map-container").classList.add("hidden");
+      }
     });
 
-  autocompletePost = new google.maps.places.Autocomplete(postAddressField, {
-    types: [],
-  });
+  document
+    .getElementById("media-overlay-map-btn")
+    .addEventListener("click", (e) => {
+      console.log("map button working");
+      document.getElementById("media-overlay-trip-btn").classList.add("hidden");
 
-  // autocompletePlace
+      document.getElementById("media-map-container").classList.remove("hidden");
+
+      if (
+        !document
+          .getElementById("media-trip-container")
+          .classList.contains("hidden")
+      ) {
+        console.log("remove");
+        document.getElementById("media-trip-container").classList.add("hidden");
+      }
+    });
 
   scrollToElement(pageElement);
 
