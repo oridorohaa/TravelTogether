@@ -55,6 +55,16 @@ const authUser = async (req, res, next) => {
   }
 };
 
+const authUserStatic = async (req, res, next) => {
+  // console.log("WORKING");
+  username = req.cookies["username"];
+  password = req.cookies["password"];
+  // console.log("INSIDE auth user f username:", username);
+  req.user = await User.findByCredentials(username, password);
+  // console.log("REQ.USER IS SET", req.user);
+  return req.user;
+};
+
 app.get("/", (req, res) => {
   res.render("index");
 });
@@ -172,14 +182,24 @@ app.post("/doregister", async (req, res) => {
   }
 });
 
-// user profile
+// USER PROFILE ROUTER
 app.get("/:username", async (req, res) => {
   const currentUser = await User.findOne({ username: req.params.username });
+  req.user = await authUserStatic(req);
 
-  //
-
-  // console.log("CURRENT USER:", currentUser);
   if (!currentUser) return res.redirect("/");
+  console.log("req.user INSIDE the FUNCTION we need", req.user);
+  // user last seen UpdatedDate
+  // is user same as the saved cookies username
+  let correctUser = false;
+  if (currentUser.id === req.user.id) {
+    console.log("inside IF");
+    correctUser = true;
+    currentUser.updatedAt = Date.now();
+    await currentUser.save();
+  }
+
+  // create last seen online time
 
   let posts = await Post.find({ owner: currentUser._id }).sort({ date: 1 });
 
@@ -296,29 +316,50 @@ app.get("/:username", async (req, res) => {
   // console.log(trips, "------TRIPS");
   // console.log("start-------------", output, "---------------------ALL OUTPUT");
   res.render("home", {
+    // object needs to be stringified in
+    //  order for javascript to read it in the handlebar html
+    correctUser,
+    currentUser: JSON.stringify(currentUser),
     user: currentUser.toObject(),
+    updatedDate: JSON.stringify(currentUser.updatedDate),
     postsObj,
     output,
     trips: JSON.stringify(tripsObj),
     MAP_API_STYLE,
   });
 });
-//maps.googleapis.com/maps/api/staticmap?key=YOUR_API_KEY&center=47.65,-122.35&zoom=12&format=png&maptype=roadmap&&size=480x360
 
-// app.post("/home", async (req, res) => {
-//   const user = new User(req.body);
-//   await user.save();
-//   const token = await user.generateAuthToken();
-//   res.cookie("username", user.username);
-//   res.cookie("password", user.password);
+// UPDATE  USER LOCATION ROUTER
+app.post("/updateUserLocation", authUser, async (req, res) => {
+  let latitude = req.body.latitude;
+  let longitude = req.body.longitude;
+  // console.log(latitude, "LATITUDE");
+  // console.log(longitude, "LONGITUDE");
+  let id = { _id: req.user._id };
+  // console.log(id, "TESTING ID");
+  let curUser = await User.findOneAndUpdate(id, {
+    $set: { longitude: longitude, latitude: latitude },
+  });
+  // console.log(curUser, "TESTING CUR USER");
+  await curUser.save();
+  res.json({ status: "success" });
+});
 
-//   const currentUserObj = user.toObject();
-//   res.render("home", {
-//     user: user.toObject(),
-//     // need to pass trips in here as well for the first run?
-//     currentUserObj,
-//   });
-// });
+// GET USER COORDS
+app.post("/getUserCoords", async (req, res) => {
+  let username = req.body.username;
+  console.log(username, "TESTING USERNAME from client");
+  let user = await User.findOne({ username: username });
+  console.log(user, "TESTING USER");
+  let latitude = user.latitude;
+  console.log("TESTING CUR USER LATITUDE", latitude);
+  let longitude = user.longitude;
+  res.json({
+    status: "success",
+    latitude,
+    longitude,
+  });
+});
 
 app.get("/logout", authUser, async (req, res) => {
   res.clearCookie("username");
@@ -331,7 +372,7 @@ app.post("/postToTimeline", authUser, async (req, res) => {
   const post = new Post({ ...req.body, owner: req.user._id });
   await post.save();
 
-  res.json({ status: "success" });
+  res.json({ status: "success", id: post._id });
 });
 
 app.get("/deletePost/:id", authUser, async (req, res) => {
@@ -351,7 +392,7 @@ app.get("/deletePost/:id", authUser, async (req, res) => {
 // -----------------Description Routers
 
 app.post("/postDescrip", authUser, async (req, res) => {
-  console.log(req.body, "REQ.BODY");
+  // console.log(req.body, "REQ.BODY");
   const _id = { _id: req.body.id };
   const description = { description: req.body.description };
   const currPost = await Post.findOneAndUpdate(_id, description);
@@ -373,11 +414,11 @@ app.get("/editDescrip", authUser, async (req, res) => {
 
 // ---------------------Trip Routers
 app.post("/newTriptoTimeline", authUser, async (req, res) => {
-  console.log(req.body);
-  console.log(req.user._id);
+  // console.log(req.body);
+  // console.log(req.user._id);
   const trip = new Trip({ ...req.body, owner: req.user._id });
   await trip.save();
-  console.log(trip);
+  // console.log(trip);
   res.json({ status: "success" });
 });
 
@@ -387,6 +428,7 @@ app.get("/test", authUser, async (req, res) => {
 
 //------------Mongoose connect to MongoDB
 const mongoose = require("mongoose");
+const { findOneAndUpdate } = require("./models/user");
 mongoose.connect(
   "mongodb+srv://traveltogether:travel@cluster0.ldmcn.mongodb.net/travel-api?retryWrites=true&w=majority",
   {

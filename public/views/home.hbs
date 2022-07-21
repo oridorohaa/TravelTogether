@@ -8,11 +8,12 @@
 
     <link rel="stylesheet" href="/static/style.css" />
 
-    <script>
+    <script>  
       let trips = {{{trips}}}
+      let user = {{{currentUser}}}  
+      let correctUser = {{correctUser}}
     </script>
     <script src="/static/script.js"></script>
-    <title>Document</title>
 
   </head>
   <body
@@ -83,26 +84,10 @@
     <div class="media-name-status-container" >
     <h1 class="user-name-h1" style="font-family:Oswald; letter-spacing:2; font-size:52px">{{user.username}}</h1>
     <div class="status-circle" id="status-circle"></div>
-    <h3 class="hours-ago-h3" id="online-offline">5 hours ago </h3>
+    <h3 class="hours-ago-h3" id="online-offline"> </h3>
     </div>
-    <script>
-      window.addEventListener("load",(e)=>{
-        if(navigator.onLine){
-          console.log("ONLINE!")
-          document.getElementById("online-offline").innerHTML="online"
-
-        }else{
-           document.getElementById("status-circle").style.color="orange"
-          document.getElementById("online-offline").innerHTML="offline"
-
-        }
-      })
-    </script>
-   
-
-  
-
     {{! GoogleMaps image }}
+    
     <div class="location-container" id="location-container">
       <img
         id="map-image"
@@ -110,14 +95,16 @@
         alt=""
       />
     </div>
-    <h3 class="loc-status-h3">Current Location</h3>
+    <h3 class="loc-status-h3" id = "loc-status-h3"></h3>
     
 
     {{!Make a new Post to the  Timeline }}
    
     <div class="location-trip-container" id="location-trip-container">
+      {{#if correctUser }}
       <button class="new-trip-button" id="new-trip-button" style="">add new trip </button>
       <button class="new-location-button" id="new-location-button" style="">add new place</button>
+      {{/if}}
     </div>
     <div class="hidden" id="trip-goback-button-div" >
     <button class="trip-goback-button" id ="trip-goback-button"><img src="/static/arrow.png"
@@ -154,10 +141,12 @@
       {{#each output}}
         {{#if this.latitude}}
          <form class="delete-button-form" style="z-index:10" id="delete-button-form" action="/deletePost/{{this._id}}" method="GET">
-            {{!-- <button type="button" class="delete-post-button" id="submit-description-button-{{this._id}}" onclick="descriptionButtonClicked('{{this._id}}')"><img src="/static/pencil.png" style="height:18px; width:18px; opacity:.8"/></button> --}}
+            {{!-- {{#if correctUser}}   --}}
             <button class="delete-post-button" id="delete-post-button" onclick="return confirm('Are you sure you want to delete this post?');"><img src="/static/delete.png" style="height:18px; width:18px" /></button>
+            {{!-- {{/if }} --}}
             </form>
             {{!Content Container}}
+          <span id="id-{{this._id}}" /> 
           <div class="content-container" id="content-container">
            <div class="post-desc-div" id="post-desc-div-{{this._id}}" style="height:50px; display:flexbox; justify-content:space-between">
              <h3 class="postdescription-text" style="display:inline-block; " id="postdescription-text-{{this._id}}">{{this.description}}</h3>

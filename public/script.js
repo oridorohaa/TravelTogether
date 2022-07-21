@@ -17,14 +17,79 @@ window.onload = function () {
     "location-trip-container"
   );
   let newLocationBtn = document.getElementById("new-location-button");
-  let newTripBtn = document.getElementById("new-trip-button");
+  // if()
+  let newTripBtn = document.getElementById(`new-trip-button`);
+  console.log("newTripBtn");
   let newTripContainer = document.getElementById("newtrip-container");
   let postTripBtn = document.getElementById("post-trip-button");
   let mediaTripBtn = document.getElementById("media-trip-button");
-  console.log(postTripBtn);
+  // console.log(postTripBtn);
   let postDescriptionInput = document.getElementById("post-description-input");
 
   let addPostInfoContainer = document.getElementById("newpost-container");
+  let onlineStatus = document.getElementById("online-offline");
+  let statusCircle = document.getElementById("status-circle");
+  let lastSeen = document.getElementById("loc-status-h3");
+
+  // update time ago function
+  function timeSince(date) {
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return Math.floor(interval) + " years";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " months";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " days";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " hours";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
+  }
+  // Updating the Online Status
+  function updateStatus(updatedDate) {
+    let currentTime = new Date().getTime();
+    // remove the timezone thats used to store in the db
+    let updated = new Date(user.updatedAt).getTime();
+    let fiveMinDiff = 5 * 60 * 1000;
+    console.log(updatedDate, "from the database raw");
+    console.log(currentTime, "current");
+    console.log(updated, "updated");
+    console.log(currentTime - fiveMinDiff);
+    if (updated >= currentTime - fiveMinDiff) {
+      onlineStatus.innerHTML = "online";
+      statusCircle.style.backgroundColor = "#50e3c2";
+      lastSeen.innerHTML = "Current Location";
+    } else {
+      onlineStatus.innerHTML = "offline";
+      statusCircle.style.backgroundColor = "orange";
+      let seen = new Date(user.updatedAt);
+      console.log(seen);
+      let x = timeSince(seen);
+      console.log(x);
+      lastSeen.innerHTML = x + " ago";
+    }
+  }
+  updateStatus(user.updatedAt);
+
+  setTimeout(() => {
+    if (window.location.hash)
+      document
+        .getElementById(window.location.hash.slice(1))
+        .scrollIntoView({ behavior: "smooth" });
+  }, 1);
 
   colors = [
     "#5FA59B",
@@ -37,6 +102,8 @@ window.onload = function () {
     "#58949C",
   ];
   let placedLines = [];
+  let lasttripdotBottom = 0;
+
   function setTripDivs(trips) {
     offset = 45;
     i = 0;
@@ -63,10 +130,10 @@ window.onload = function () {
 
         color = colors[i % colors.length];
         i++;
-        console.log(i);
         let curTripHeight = fPos.top - sPos.top;
         let curMid = sPosScroll + curTripHeight / 2;
 
+        // console.log(trip._id, "TESTING trip id");
         let tripLocation = document.createElement("tripLocation-text");
         tripLocation.id = i;
         tripLocation.className = "tripLocation-text";
@@ -148,36 +215,34 @@ window.onload = function () {
 
         document.body.appendChild(tripDot);
         document.body.appendChild(tripDotBottom);
+        if (tripDotBottom.offsetTop > lasttripdotBottom) {
+          lasttripdotBottom = tripDotBottom.offsetTop;
+        }
       }
     });
   }
   if (trips) {
     setTripDivs(trips);
   }
-  //DRY CODE --- putting two functions into one using turnary
-  function toggleDarkLightMode(isDark) {
-    nav.style.backgroundColor = isDark
-      ? "rgb(0 0 0 / 50%)"
-      : "rgb(255 255 255 /50%)";
 
-    // to target all elements of the same parent <div>
-    toggleIcon.children[0].textContent = isDark ? "Dark Mode" : "Light Mode";
-    //Dry Code
-    isDark
-      ? toggleIcon.children[1].classList.replace("fa-sun", "fa-moon")
-      : toggleIcon.children[1].classList.replace("fa-moon", "fa-sun");
-  }
-
-  // Switch Theme Dynamically
-  function switchTheme(event) {
-    if (event.target.checked) {
-      document.documentElement.setAttribute("data-theme", "dark");
-      localStorage.setItem("theme", "dark");
-      toggleDarkLightMode(true);
+  // setting the length of the timeline to equal the position of the last trip container
+  // tripcontaner.offSetTop + tripcontainer.offSetHeight
+  // or trip dot bottom.offTop  --- whichever one is greater
+  let timeline = document.getElementById("timeline-container");
+  let tripcontainers = document.getElementsByClassName("content-container");
+  if (
+    tripcontainers[tripcontainers.length - 1] === undefined &&
+    lasttripdotBottom === 0
+  ) {
+    timeline.style.height = "100vh";
+  } else {
+    let lastcontainer = tripcontainers[tripcontainers.length - 1];
+    if (!lastcontainer || lasttripdotBottom > lastcontainer.offsetTop) {
+      timeline.style.height = lasttripdotBottom + 10;
     } else {
-      document.documentElement.setAttribute("data-theme", "light");
-      localStorage.setItem("theme", "light");
-      toggleDarkLightMode(false);
+      timeline.style.height =
+        lastcontainer?.offsetTop + lastcontainer?.offsetHeight;
+      console.log(timeline.style.height);
     }
   }
 
@@ -194,6 +259,7 @@ window.onload = function () {
     days.push(today);
   }
 
+  console.log(correctUser, "correctUser");
   // Update Current Location
   function updateCurrentMap(latitude, longitude) {
     currentMapImg.src = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=12&size=300x200&key=AIzaSyBKClGaUcZWanoyZGta_wrGZh8t-5q6pu8&style=element:geometry%7Ccolor:0xebe3cd&style=element:labels.text.fill%7Ccolor:0x523735&style=element:labels.text.stroke%7Ccolor:0xf5f1e6&style=feature:administrative%7Celement:geometry.stroke%7Ccolor:0xc9b2a6&style=feature:administrative.land_parcel%7Cvisibility:off&style=feature:administrative.land_parcel%7Celement:geometry.stroke%7Ccolor:0xdcd2be&style=feature:administrative.land_parcel%7Celement:labels.text.fill%7Ccolor:0xae9e90&style=feature:administrative.neighborhood%7Cvisibility:off&style=feature:landscape.natural%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:poi%7Celement:labels.text%7Cvisibility:off&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x93817c&style=feature:poi.park%7Celement:geometry.fill%7Ccolor:0xa5b076&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x447530&style=feature:road%7Celement:geometry%7Ccolor:0xf5f1e6&style=feature:road%7Celement:labels%7Cvisibility:off&style=feature:road.arterial%7Celement:geometry%7Ccolor:0xfdfcf8&style=feature:road.highway%7Celement:geometry%7Ccolor:0xf8c967&style=feature:road.highway%7Celement:geometry.stroke%7Ccolor:0xe9bc62&style=feature:road.highway.controlled_access%7Celement:geometry%7Ccolor:0xe98d58&style=feature:road.highway.controlled_access%7Celement:geometry.stroke%7Ccolor:0xdb8555&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x806b63&style=feature:transit.line%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:transit.line%7Celement:labels.text.fill%7Ccolor:0x8f7d77&style=feature:transit.line%7Celement:labels.text.stroke%7Ccolor:0xebe3cd&style=feature:transit.station%7Celement:geometry%7Ccolor:0xdfd2ae&style=feature:water%7Celement:geometry.fill%7Ccolor:0xb9d3c2&style=feature:water%7Celement:labels.text%7Cvisibility:off&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x92998d`;
@@ -201,17 +267,67 @@ window.onload = function () {
 
   let latitude;
   let longitude;
-  function success(pos) {
+  let username = window.location.pathname.slice(1);
+  console.log(username, "username TESTING");
+  // update user database with current coordinates
+  function updateDBCoordinates(latitude, longitude) {
+    fetch("/updateUserLocation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        latitude,
+        longitude,
+      }),
+    })
+      .then((e) => e.json())
+      // this is sent from the server res.json()
+      .then((x) => {
+        if (x.status === "success") {
+          console.log("user location updated");
+        }
+      });
+  }
+  let lastLat;
+  let lastLon;
+  async function getLastSavedUserCoords(username) {
+    let r = await fetch("/getUserCoords", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+      }),
+    });
+    let x = await r.json();
+    if (x.status === "success") {
+      console.log(x, "testing X");
+      lastLat = x.latitude;
+      console.log(lastLat, "inside .then");
+      lastLon = x.longitude;
+      console.log("pulled latest coords from DB");
+    }
+  }
+
+  async function success(pos) {
     var crd = pos.coords;
     latitude = crd.latitude;
     longitude = crd.longitude;
-
-    if (currentMapImg) updateCurrentMap(latitude, longitude);
+    console.log(latitude, "latitude");
+    if (correctUser) {
+      if (currentMapImg) updateCurrentMap(latitude, longitude);
+      updateDBCoordinates(latitude, longitude);
+    } else {
+      // use the old coordinates that were saved to the database last time user logged in
+      await getLastSavedUserCoords(username);
+      console.log(lastLat, "LAST LAT from DB");
+      console.log(lastLon, "LAST LON from DB");
+      updateCurrentMap(lastLat, lastLon);
+    }
   }
-
   let l = navigator.geolocation.getCurrentPosition(success);
-
-  let autocomplete;
 
   // Post Location Map to Timeline
   let autocompletePost;
@@ -250,7 +366,7 @@ window.onload = function () {
     positionY = 0;
 
     positionX += pageElement.offsetLeft;
-    positionY += pageElement.offsetTop - 100;
+    positionY += pageElement.offsetTop - 250;
     pageElement = pageElement.offsetParent;
     window.scrollTo(positionX, positionY);
   }
@@ -258,10 +374,19 @@ window.onload = function () {
   let timeDividerElements = document.querySelectorAll(".divider-time");
   let pageElement;
   timeDividerElements.forEach((el) => {
-    if (el.innerHTML === "Yesterday") {
+    if (el.innerHTML === "Today") {
       pageElement = el;
     }
+    if (el.innerHTML === "Today") {
+      el.style.color = "#d60909";
+      el.style.fontWeight = "500";
+    }
   });
+  console.log(pageElement, "page element");
+
+  setTimeout(() => {
+    scrollToElement(pageElement);
+  }, 2);
 
   // ------------------------------Event Listners----------------------
 
@@ -321,6 +446,7 @@ window.onload = function () {
       // this is sent from the server res.json()
       .then((x) => {
         if (x.status === "success") {
+          window.location.hash = "id-" + x.id;
           window.location.reload();
         }
       });
@@ -421,7 +547,7 @@ window.onload = function () {
   let goBackButton = document.getElementById("trip-goback-button");
 
   // Add new Location Button
-  newLocationBtn.addEventListener("click", () => {
+  newLocationBtn?.addEventListener("click", () => {
     newLocationOrTripContainer.classList.add("hidden");
     addPostInfoContainer.classList.remove("hidden");
     document.getElementById("post-location-field").focus();
@@ -429,7 +555,7 @@ window.onload = function () {
   });
 
   // Add new Trip Buttton
-  newTripBtn.addEventListener("click", () => {
+  newTripBtn?.addEventListener("click", () => {
     newLocationOrTripContainer.classList.add("hidden");
     newTripContainer.classList.remove("hidden");
     goBackBtnDiv.classList.remove("hidden");
@@ -531,7 +657,7 @@ window.onload = function () {
       }
     });
 
-  scrollToElement(pageElement);
+  // scrollToElement(pageElement);
 
   // end window.onload
   function updateTripDivs() {
@@ -549,7 +675,10 @@ window.onload = function () {
   window.onresize = function () {
     updateTripDivs();
   };
+
+  // scrollToElement(pageElement);
 };
+//end window onload
 
 function updateTripTextOnScroll() {
   let top = window.scrollY;
