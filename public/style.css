@@ -981,7 +981,7 @@ display: none;
 
 .user-navbar li {
   /* we want it to be 20% of the nal ul which is 100vh == whole page */
-  height: 30%;
+  height: 20%;
   overflow: hidden;
 }
 

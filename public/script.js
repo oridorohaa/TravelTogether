@@ -19,7 +19,6 @@ window.onload = function () {
   let newLocationBtn = document.getElementById("new-location-button");
   // if()
   let newTripBtn = document.getElementById(`new-trip-button`);
-  console.log("newTripBtn");
   let newTripContainer = document.getElementById("newtrip-container");
   let postTripBtn = document.getElementById("post-trip-button");
   let mediaTripBtn = document.getElementById("media-trip-button");
@@ -104,6 +103,26 @@ window.onload = function () {
   let placedLines = [];
   let lasttripdotBottom = 0;
 
+  // // ALL TRIPS DELETE PAGE
+  let deleteTripsCont = document.getElementById("delete-trips-container");
+  console.log(deleteTripsCont, "DELETE trips Cont");
+  // function allTripsToDelete(trips) {
+  //   trips.map((trip) => {
+  //     console.log(trip, "cur trip inside delete all trips function");
+  //     let curtrip = document.createElement("trip");
+  //     console.log(curtrip, "curtrip CREATED");
+  //     curtrip.id = `trip-${trip._id}`;
+  //     curtrip.innerHTML = `${trip.location}`;
+  //     curtrip.style.fontWeight = "300";
+  //     curtrip.style.letterSpacing = "2px";
+  //     curtrip.style.color = "#fff";
+  //     curtrip.style.fontSize = "17px";
+  //     curtrip.style.fontFamily = "Inter";
+
+  //     // deleteTripsCont.appendChild(curtrip);
+  //   });
+  // }
+  //POPULATING USER WITH ALL TRIPS
   function setTripDivs(trips) {
     offset = 45;
     i = 0;
@@ -139,7 +158,6 @@ window.onload = function () {
         tripLocation.className = "tripLocation-text";
         tripLocation.innerHTML = `${trip.location}`;
         tripLocation.style.fontWeight = "500";
-        tripLocation.style.letterSpacing = "3px";
         tripLocation.style.writingMode = "vertical-rl";
         tripLocation.style.transform = "scale(-1)";
         tripLocation.style.backgroundColor = "#00000000";
@@ -223,6 +241,7 @@ window.onload = function () {
   }
   if (trips) {
     setTripDivs(trips);
+    // allTripsToDelete(trips);
   }
 
   // setting the length of the timeline to equal the position of the last trip container
@@ -368,7 +387,7 @@ window.onload = function () {
     positionX += pageElement.offsetLeft;
     positionY += pageElement.offsetTop - 250;
     pageElement = pageElement.offsetParent;
-    window.scrollTo(positionX, positionY);
+    window.scroll(positionX, positionY);
   }
 
   let timeDividerElements = document.querySelectorAll(".divider-time");
@@ -574,6 +593,37 @@ window.onload = function () {
     goBackBtnDiv.classList.add("hidden");
   });
 
+  // go back to my trip button
+  // const loggedInUsename = (name) =>
+  //   document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "";
+  // // console.log(unescape(loggedInUsename("username")), "cookie value");
+  // // console.log(curLoggedInUser, "testing cur logged in user ");
+  // let curusername = loggedInUsename("username");
+  // console.log(curusername);
+  // let mytripBtn = document.getElementById("my-trip-button");
+  // mytripBtn.addEventListener("click", () => {
+  //   fetch(`/${curusername}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     // body: JSON.stringify({}),
+  //   })
+  //     .then((e) => e.json())
+  //     .then((x) => {
+  //       if (x.status === "success") {
+  //       }
+  //     });
+  // });
+
+  //DELETING a TRIP
+  allTripsBtn = document.getElementById("all-trips-btn");
+  allTripsBtn?.addEventListener("click", () => {
+    let tripNames = trips.map((trip) => trip.location);
+    console.log(tripNames);
+    //render all the trip names and delete one by one option
+  });
+
   let newTripFromDate = document.getElementById("new-trip-from-date");
   let newTripToDate = document.getElementById("new-trip-to-date");
   let newTripLocation = document.getElementById("new-trip-location");
@@ -622,6 +672,7 @@ window.onload = function () {
     .getElementById("media-overlay-trip-btn")
     .addEventListener("click", (e) => {
       console.log("Media Button working ");
+      allTripsBtn.classList.add("hidden");
       document.getElementById("media-overlay-trip-btn").classList.add("hidden");
       document.getElementById("media-overlay-map-btn").classList.add("hidden");
 

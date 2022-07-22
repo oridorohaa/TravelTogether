@@ -26,13 +26,16 @@ app.use(cookieParser());
 app.disable("etag");
 app.use(morgan("tiny"));
 app.set("views", path.join(__dirname, "../public/views"));
+
 // app.engine(
 //   "hbs",
-//   exphbs({
+//   handlebars({
+//     layoutsDir: __dirname + "../public/views/layouts",
 //     extname: "hbs",
+//     defaultLayout: "index.js",
+//     partialsDir: __dirname + "../public/views/partials/",
 //   })
 // );
-
 app.set("view engine", "hbs");
 
 // var hbs = exphbs.create({});
@@ -182,6 +185,22 @@ app.post("/doregister", async (req, res) => {
   }
 });
 
+// ALL TRIPS
+app.get("/alltrips", authUser, async (req, res) => {
+  let _id = req.user.id;
+  console.log(_id);
+  let trips = await Trip.find({ owner: _id });
+  console.log(trips, "trips");
+  let tripsObj = trips.map((trip) => {
+    trip.toObject();
+    return trip;
+  });
+
+  res.render("alltrips", {
+    trips: JSON.stringify(tripsObj),
+  });
+});
+
 // USER PROFILE ROUTER
 app.get("/:username", async (req, res) => {
   const currentUser = await User.findOne({ username: req.params.username });
@@ -324,6 +343,7 @@ app.get("/:username", async (req, res) => {
     updatedDate: JSON.stringify(currentUser.updatedDate),
     postsObj,
     output,
+    loggedinuser: req.user,
     trips: JSON.stringify(tripsObj),
     MAP_API_STYLE,
   });
@@ -422,6 +442,14 @@ app.post("/newTriptoTimeline", authUser, async (req, res) => {
   res.json({ status: "success" });
 });
 
+app.post("/deleteTrip/:id", async (req, res) => {
+  const _id = req.body.id;
+  // let curtrip = await Trip.findOne({ _id: _id });
+  // console.log(curtrip);
+  await Trip.findOneAndDelete({ _id: _id });
+  res.json({ status: "success" });
+});
+
 app.get("/test", authUser, async (req, res) => {
   res.json({ status: "success" });
 });
@@ -429,6 +457,7 @@ app.get("/test", authUser, async (req, res) => {
 //------------Mongoose connect to MongoDB
 const mongoose = require("mongoose");
 const { findOneAndUpdate } = require("./models/user");
+const { handlebars } = require("hbs");
 mongoose.connect(
   "mongodb+srv://traveltogether:travel@cluster0.ldmcn.mongodb.net/travel-api?retryWrites=true&w=majority",
   {
