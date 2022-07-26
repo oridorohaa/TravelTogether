@@ -195,14 +195,19 @@ app.get("/alltrips", authUser, async (req, res) => {
     trip.toObject();
     return trip;
   });
+  let correctUser = req.user.username;
+  // console.log("TESTING ALL TRIPS CORRECT USER:", correctUser);
 
   res.render("alltrips", {
     trips: JSON.stringify(tripsObj),
+    correctUser,
   });
 });
 
 // USER PROFILE ROUTER
 app.get("/:username", async (req, res) => {
+  console.log(req.params.username, "TESTING PARAMS USERNAME");
+  console.log("TESTING testing TESTING TESTING TESTING");
   const currentUser = await User.findOne({ username: req.params.username });
   req.user = await authUserStatic(req);
 
@@ -211,7 +216,7 @@ app.get("/:username", async (req, res) => {
   // user last seen UpdatedDate
   // is user same as the saved cookies username
   let correctUser = false;
-  if (currentUser.id === req.user.id) {
+  if (currentUser.id === req.user?.id) {
     console.log("inside IF");
     correctUser = true;
     currentUser.updatedAt = Date.now();
@@ -381,10 +386,11 @@ app.post("/getUserCoords", async (req, res) => {
   });
 });
 
-app.get("/logout", authUser, async (req, res) => {
+app.get("/do/logout", async (req, res) => {
+  console.log("hi");
   res.clearCookie("username");
   res.clearCookie("password");
-  res.render("index");
+  res.redirect("/");
 });
 
 // ---------------------Post Routers

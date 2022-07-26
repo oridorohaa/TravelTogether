@@ -1,6 +1,7 @@
 window.onload = function () {
   // ALL TRIPS DELETE PAGE
   let deleteTripsCont = document.getElementById("delete-trips-container");
+  let menuBars = document.getElementById("menu-bars");
 
   let months = {
     1: "Jan",
@@ -19,10 +20,10 @@ window.onload = function () {
 
   function allTripsToDelete(trips) {
     trips.map((trip) => {
-      let form = document.createElement("form");
-      deleteTripsCont.appendChild(form);
-      form.id = `form-${trip._id}`;
-      let curForm = document.getElementById(`form-${trip._id}`);
+      // let form = document.createElement("form");
+      // deleteTripsCont.appendChild(form);
+      // form.id = `form-${trip._id}`;
+      // let curForm = document.getElementById(`form-${trip._id}`);
 
       let curtrip = document.createElement("button");
       curtrip.id = `trip-${trip._id}`;
@@ -36,7 +37,7 @@ window.onload = function () {
 
       curtrip.innerHTML = `${
         trip.location
-      } (${fromMonth} ${from.getDate()}, ${from.getFullYear()} - ${toMonth} ${to.getDate()}, ${to.getFullYear()}
+      } <br>(${fromMonth} ${from.getDate()}, ${from.getFullYear()} - ${toMonth} ${to.getDate()}, ${to.getFullYear()}
       )`;
       curtrip.style.fontWeight = "300";
       curtrip.style.letterSpacing = "2px";
@@ -50,7 +51,7 @@ window.onload = function () {
       curtrip.style.textTransform = "none";
       curtrip.style.textAlign = "left";
 
-      curForm.appendChild(curtrip);
+      deleteTripsCont.appendChild(curtrip);
     });
   }
   allTripsToDelete(trips);
@@ -67,8 +68,7 @@ window.onload = function () {
   let curTextContent;
 
   document.addEventListener("click", (e) => {
-    e.preventDefault();
-    console.log("hello");
+    // e.preventDefault();
     console.log(e.target, "E.TARGET");
     let id;
     if (e.target.classList.contains("trips")) {
@@ -76,14 +76,15 @@ window.onload = function () {
       id = target[target.length - 1];
       currentlyEditing = id;
       curTextContent = e.target.textContent;
-      console.log(currentlyEditing, "TESTING currently editing");
     }
-    ques.classList.remove("hidden");
-    yesBtn.classList.remove("hidden");
-    noBtn.classList.remove("hidden");
-    curTripToDelete.innerHTML = "selected trip:";
-    curTripName.innerHTML = `${curTextContent}`;
-    window.scrollTo(0, 0);
+    if (currentlyEditing) {
+      ques.classList.remove("hidden");
+      yesBtn.classList.remove("hidden");
+      noBtn.classList.remove("hidden");
+      curTripToDelete.innerHTML = "selected trip:";
+      curTripName.innerHTML = `${curTextContent}`;
+      window.scrollTo(0, 0);
+    }
   });
 
   noBtn.addEventListener("click", () => {
@@ -119,6 +120,34 @@ window.onload = function () {
 
   yesBtn.addEventListener("click", () => {
     deleteCurrentTrip(currentlyEditing);
+  });
+
+  function toggleNav() {
+    menuBars.classList.toggle("change");
+    overlay.classList.toggle("overlay-active");
+    if (overlay.classList.contains("overlay-active")) {
+      overlay.classList.replace("overlay-slide-left", "overlay-slide-right");
+    } else {
+      overlay.classList.replace("overlay-slide-right", "overlay-slide-left");
+    }
+  }
+
+  menuBars.addEventListener("click", () => {
+    toggleNav();
+    if (
+      !document
+        .getElementById("media-trip-container")
+        .classList.contains("hidden")
+    ) {
+      document.getElementById("media-trip-container").classList.add("hidden");
+    }
+    if (
+      !document
+        .getElementById("media-map-container")
+        .classList.contains("hidden")
+    ) {
+      document.getElementById("media-map-container").classList.add("hidden");
+    }
   });
 
   //end window.onload

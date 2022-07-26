@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="/static/style.css" />
     <script>
       let trips ={{{trips}}}
+
     </script>
-    <!-- <script src="/static/script.js"></script> -->
+    {{! <script src="/static/script.js"></script> }}
     <script src="/static/alltrips.js"></script>
 
   </head>
@@ -29,96 +30,26 @@
       id="overlay"
     >
       <nav class="user-navbar">
-        <form action="/" method="GET">
-          <li class="overlay-home-button"><button
-              style="font-family: Inter; "
-            >Home</button></li>
-          {{! <li class="overlay-trip-button" ><button style="font-family: Inter;">New Trip</button></li> }}
-        </form>
-        {{#if correctUser}}
-          <form action="/alltrips" method="GET">
-            <li class="all-trips-overlay-button"><button
-                id="all-trips-btn"
-                style="font-family: Inter; "
-              >My Trips</button></li>
+        <a class="a-link" href="/">Home</a>
 
-            <li class="media-overlay-trip-button" style="width:100%"><button
-                id="media-overlay-trip-btn"
-                style="font-family: Inter;"
-              >New Trip</button></li>
-          </form>
-        {{/if}}
-        {{!-- {{#if correctUser}} --}}
-        {{!-- <li><a href="/{{loggedinuser.username}}"><button class="hidden" id="my-trip-button" style="font-family: Inter; ">My Trip</button></a></li> --}}
-        {{!-- {{#else}} --}}
-        <li><a href="/{{loggedinuser.username}}"><button
+        <form action="/{{correctUser}}" method="GET"><li><button
+              class="my-page-btn"
               id="my-trip-button"
               style="font-family: Inter; "
-            >My Page</button></a></li>
-        {{!-- {{/if}} --}}
-        {{! Media addd trip input section div }}
-        <div class="media-trip-container hidden" id="media-trip-container">
-          <h3 class="from-h3">From:</h3>
-          <input
-            class="new-trip-from-date"
-            id="media-new-trip-from-date"
-            name="from"
-            type="date"
-          />
-          <h3 class="to-h3">To:</h3>
-          <input
-            class="new-trip-to-date"
-            id="media-new-trip-to-date"
-            name="to"
-            type="date"
-          />
-          <h3 class="where-h3">Where:</h3>
-          <input
-            class="new-trip-location"
-            id="media-new-trip-location"
-            type="text"
-            placeholder="enter location"
-          />
-          <button class="post-trip-button" id="media-trip-button">post trip
-            dates</button>
-        </div>
-        <form action="/" method="GET">
-          <li class="overlay-friends-button"><button
-              style="font-family: Inter;"
-            >Visit Friends</button></li>
-          {{! <li class="overlay-map-button" ><button style="font-family: Inter;">New Map</button></li> }}
-        </form>
-        {{#if correctUser}}
-          <li class="media-overlay-map-button" style="width:100%"><button
-              id="media-overlay-map-btn"
-              style="font-family: Inter;"
-            >New Map</button></li>
-        {{/if}}
-        <div class="media-map-container hidden" id="media-map-container">
-          <input
-            name="mappost"
-            class="new-map-input"
-            id="media-post-location-field"
-            type="text"
-            placeholder="search for place"
-          />
-          <input
-            name="date"
-            id="media-post-time"
-            class="map-time-input"
-            type="datetime-local"
-          />
-          <button class="post-location-button" id="media-post-map-button">post a
-            place</button>
+            >My Page</button></li></form>
 
-        </div>
-
-        <form action="logout" method="GET">
-          <li class="logout"><button style="font-family: Inter;">Log Out</button></li>
-        </form>
+        <a class="a-link" href="/do/logout">Log Out</a>
       </nav>
 
     </div>
+    <div class="menu-bars" id="menu-bars">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+
+    {{! End nav bar section }}
+
     <h1
       id="h1"
       style="font-family: Inter;

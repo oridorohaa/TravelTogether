@@ -740,6 +740,17 @@ display: none;
   /* width: inherit; */
 }
 
+.delete-ques-h2{
+  font-family: Inter;
+  color:#fff;
+  font-size: 35px;
+  background-color: rgba(255, 255, 255, 0);
+  letter-spacing:2;
+  font-weight:200;
+  margin:45px;
+  text-align:center
+}
+
 .postdescription-text {
   font-family: "Inter", sans-serif;
   padding-top: 8px;
@@ -981,7 +992,7 @@ display: none;
 
 .user-navbar li {
   /* we want it to be 20% of the nal ul which is 100vh == whole page */
-  height: 20%;
+  height: 15%;
   overflow: hidden;
 }
 
@@ -1000,13 +1011,47 @@ display: none;
   font-size: 35px;
 }
 
+.a-link, .my-page-btn{
+  /* height: 15%; */
+  /* overflow: hidden; */
+  position: relative;
+  top: 45%;
+  color: #fff;
+  font-family: Shadows Into Light, cursive;
+  background-color: rgba(23, 85, 110, 0);
+  box-shadow: none;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  font-size: 35px;
+  font-family: Inter;
+  font-weight: 400;
+}
+
 .user-navbar li button:hover {
   transform: scale(1.2);
   background-color: rgba(23, 85, 110, 0);
 }
 
+.a-link:hover {
+  transform: scale(1.2);
+  background-color: rgba(23, 85, 110, 0);
+}
 /* adding a line on the left side */
 .user-navbar li button::before {
+  content: "";
+  width: 25vw;
+  height: 3px;
+  background-color: #fff;
+  position: absolute;
+  top: 47.5%;
+  left: 0;
+  opacity: 0;
+}
+
+.a-link::before {
   content: "";
   width: 25vw;
   height: 3px;
@@ -1020,7 +1065,9 @@ display: none;
 .user-navbar li button:hover::before {
   opacity: 1;
 }
-
+a-link:hover::before {
+  opacity: 1;
+}
 
 /* MEDIA */
 
@@ -1031,6 +1078,10 @@ display: none;
   }
   body {
     position: relative
+  }
+  .delete-ques-h2{
+    font-size:25px;
+    margin:11px
   }
   /* body {
     overflow-x: hidden !important;

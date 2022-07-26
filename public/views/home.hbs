@@ -37,10 +37,10 @@
       </form>
       {{#if correctUser}}
       <form action="/alltrips" method="GET">
-      <li class="all-trips-overlay-button"><button id="all-trips-btn" style="font-family: Inter; ">My Trips</button></li>
+      <li class="all-trips-overlay-button"><button id="all-trips-btn" style="font-family: Inter; ">Delete Trips</button></li>
       
-        <li class="media-overlay-trip-button" style="width:100%" ><button id="media-overlay-trip-btn" style="font-family: Inter;">New Trip</button></li>
       </form>
+        <li class="media-overlay-trip-button" style="width:100%" ><button id="media-overlay-trip-btn" style="font-family: Inter;">Add Trip</button></li>
         {{/if}}
         {{!-- {{#if correctUser}} --}}
         {{!-- <li><a href="/{{loggedinuser.username}}"><button class="hidden" id="my-trip-button" style="font-family: Inter; ">My Trip</button></a></li> --}}
@@ -57,12 +57,14 @@
               <input class="new-trip-location" id="media-new-trip-location" type="text" placeholder="enter location" >
               <button class="post-trip-button" id="media-trip-button">post trip dates</button>
         </div>
-      <form action="/" method="GET">
+      {{!-- <form action="/" method="GET"> --}}
+          <a href="https://keepcalms.com/p/when-you-realize-you-have-no-friends/"> 
           <li class="overlay-friends-button" ><button style="font-family: Inter;">Visit Friends</button></li>
           {{!-- <li class="overlay-map-button" ><button style="font-family: Inter;">New Map</button></li> --}}
-      </form>
+      {{!-- </form> --}}
+        </a>
           {{#if correctUser}}
-          <li class="media-overlay-map-button"  style="width:100%"><button id="media-overlay-map-btn" style="font-family: Inter;">New Map</button></li>
+          <li class="media-overlay-map-button"  style="width:100%"><button id="media-overlay-map-btn" style="font-family: Inter;">Add Map</button></li>
           {{/if}}
           <div class="media-map-container hidden" id ="media-map-container" >
             <input name="mappost"
@@ -81,8 +83,11 @@
 
           </div>
 
-      <form action="logout" method="GET">
-          <li  class="logout" ><button style="font-family: Inter;">Log Out</button></li>
+      <form action="/do/logout" method="GET">
+        {{!-- <a class="a-link" href="/logout"> --}}
+        <li><button style="font-family:Inter">Log Out</button></li>
+        {{!-- </a> --}}
+          {{!-- <li class="a-link" ><button style="font-family: Inter;">Log Out</button></li> --}}
       </form> 
       </nav>
       
